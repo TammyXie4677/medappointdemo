@@ -28,7 +28,7 @@ public class FileUploadController {
 //    private String uploadDirectory;
 
     @Value("${S3_BUCKET_NAME}")
-    private String bucketName;
+    String bucketName;
 
     @Autowired
     private AmazonS3 amazonS3;
