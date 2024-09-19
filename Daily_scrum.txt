@@ -1,0 +1,124 @@
+Each member writes down answers to 3 questions in the following format:
+
+1. What I have done / not done since last Scrum?
+2. What I plan to do from this scrum to next? (next 24 hours)
+3. Where do I need assistance? What do I need to figure out?
+
+Example entries for one day, both team members:
+
+2024/09/13 Yunting Xie
+1. Done / not done since last scrum:
+- Finished the project proposal
+- Created a new repository on GitHub
+2. To do until next Scrum:
+- Write 5-10 backlogs on Trello
+- Host the database on AWS RDS
+- Host the file upload on AWS S3
+3. Need assistance / figure things out
+- Host the application on Heroku
+
+2024/09/13 Fei Yang
+1. Done since last scrum
+- 
+2. Plan until next Scrum
+- 
+3. Need assistance / figure things out
+- 
+
+2024/09/14-15 Yunting Xie
+1. Done / not done since last scrum:
+- Finished 5-10 backlogs on Trello
+- Created a new app on heroku
+- Deployed Github on heroku
+- Download heroku CLI & Heroku Postgres
+- Not finished setup postgres on heroku
+2. To do until next Scrum:
+- Setup a simple java springboot on heroku for testing
+- Setup AWS S3 on heroku
+3. Need assistance / figure things out
+- Need to setup postgres
+
+2024/09/14-15 Fei Yang
+1. Done since last scrum
+- 
+2. Plan until next Scrum
+- 
+3. Need assistance / figure things out
+- 
+2024/09/16 Yunting Xie
+1. Done / not done since last scrum:
+- Not finished setup postgres on heroku
+- continue to deploy a simple app on heroku
+2. To do until next Scrum:
+- Setup index/login/register interface
+- Setup AWS S3 on heroku
+3. Need assistance / figure things out
+- Setup AWS S3 on heroku
+
+2024/09/16 Fei Yang
+1. Done since last scrum
+- 
+2. Plan until next Scrum
+- 
+3. Need assistance / figure things out
+- 
+
+2024/09/17 Yunting Xie
+1. Done / not done since last scrum:
+- Deployed my app on hero
+- Not Connected Postgres Database
+- Not figure out how to connect aws s3
+- Finish Html file for index/login/register interface
+2. To do until next Scrum:
+- Continue to setup Postgres Database
+- To add simple CURL to Admin 
+- Setup Sppringboot Security
+3. Need assistance / figure things out
+- Don't know how to check if Postgres database connected successfully 
+
+2024/09/17 Fei Yang
+1. Done since last scrum
+- 
+2. Plan until next Scrum
+- 
+3. Need assistance / figure things out
+- 
+
+2024/09/18 Yunting Xie
+1. Done / not done since last scrum:
+- Connected Postgres Database and created a simple table
+- Not connect to Aws S3
+- Not set up Admin Security
+2. To do until next Scrum:
+- Continue to add simple CURL to Admin 
+- Setup Sppringboot Security
+- Continue to connect aws s3
+3. Need assistance / figure things out
+- Want to know how to add Calendar
+
+2024/09/18 Fei Yang
+1. Done since last scrum
+- 
+2. Plan until next Scrum
+- 
+3. Need assistance / figure things out
+- 
+
+2024/09/19 Yunting Xie
+1. Done / not done since last scrum:
+- Try to connect to Aws S3 but not success
+- Set up Admin Security but not success
+2. To do until next Scrum:
+- Continue to add simple CURL to Admin 
+- Continue to setup Sppringboot Security
+- Continue to connect aws s3
+3. Need assistance / figure things out
+- Want to know how to add Calendar
+
+2024/09/18 Fei Yang
+1. Done since last scrum
+- 
+2. Plan until next Scrum
+- 
+3. Need assistance / figure things out
+- 
