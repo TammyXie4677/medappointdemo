@@ -1,6 +1,10 @@
 package com.example.medappointdemo.controller;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,19 +17,30 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class FileUploadController {
 
     // Set this to the directory where you want to store the images
-    @Value("${upload.path}")
-    private String uploadDirectory;
+//    @Value("${upload.path}")
+//    private String uploadDirectory;
+
+    @Value("${S3_BUCKET_NAME}")
+    private String bucketName;
+
+    @Autowired
+    private AmazonS3 amazonS3;
+
+
 
     @PostMapping("/uploadAvatar")
-    public String uploadAvatar(@RequestParam("imgUrl") MultipartFile file, Model model) {
+    public ResponseEntity<Map<String, String>> uploadAvatar(@RequestParam("imgUrl") MultipartFile file, Model model) {
+        Map<String, String> response = new HashMap<>();
         if (file.isEmpty()) {
-            model.addAttribute("msg", "File is empty. Please select a valid image.");
-            return "redirect:/edit";
+            response.put("msg", "File is empty. Please select a valid image.");
+            return ResponseEntity.badRequest().body(response);
         }
 
         try {
@@ -36,24 +51,33 @@ public class FileUploadController {
             // Generate new file name using timestamp
             String newFileName = "IMG_" + Instant.now().getEpochSecond() + fileExtension;
 
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.getSize());
+            amazonS3.putObject(bucketName, newFileName, file.getInputStream(), metadata);
+
             // Path where the file will be saved
-            Path filePath = Paths.get(uploadDirectory + File.separator + newFileName);
+//            Path filePath = Paths.get(uploadDirectory + File.separator + newFileName);
 
             // Save the file
-            Files.write(filePath, file.getBytes());
+//            Files.write(filePath, file.getBytes());
 
             // Set the URL for the saved image (relative to the static directory)
-            String img = "/uploads/" + newFileName;
-            model.addAttribute("msg", "File uploaded successfully!");
-            model.addAttribute("imgUrl", img);
+//            String imgUrl = "/uploads/" + newFileName;
+//            response.put("imgUrl", imgUrl);
+//            response.put("msg", "File uploaded successfully!");
+            response.put("imgUrl", amazonS3.getUrl(bucketName,newFileName).toString());
+            response.put("msg", "File uploaded successfully.");
+
+            return ResponseEntity.ok(response);
 
 
         } catch (IOException e) {
-            e.printStackTrace();
-            model.addAttribute("msg", "Error uploading file: " + e.getMessage());
+
+            response.put("msg", "Error uploading file: " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
         }
 
-        return "redirect:/edit"; // Adjust this based on your actual redirection
+
     }
 
     // Utility method to get the file extension
