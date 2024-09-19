@@ -27,8 +27,8 @@ public class FileUploadController {
 //    @Value("${upload.path}")
 //    private String uploadDirectory;
 
-    @Value("${S3_BUCKET_NAME}")
-    String bucketName;
+    // @Value("${S3_BUCKET_NAME}")
+    String bucketName = "myherokubucket";
 
     @Autowired
     private AmazonS3 amazonS3;
