@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Patient - Appointment</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 自定义样式 -->
+    <style>
+        /* 适当的样式调整 */
+        #specializationDiv {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-sm">
+    <h1>Select the date and time for appointment</h1>
+
+    <div class="container">
+    <div>
+        <h3>Welcome</h3>
+        <p>Today is : <span th:text="${today}"></span> , and you could select the date up to :
+            <span th:text="${dueday}"></span>,
+            that means you could book an appointment in <span th:text="${daysBetween}"></span> days.</p>
+    </div>
+
+        <form th:action="@{/patients/appointments/save}" method="post">
+            <div class="form-group">
+
+                <label for="doctorId">Choose a Doctor:</label>
+                <select id="doctorId" name="doctorId" class="form-control" required>
+                    <option value="" disabled selected>Select a doctor</option>
+                    <!-- 遍历 doctors 列表 -->
+                    <option th:each="doctor : ${doctors}"
+                            th:value="${doctor.id}"
+                            th:data-specialization="${doctor.specialization}"
+                            th:text="${doctor.firstName + ' ' + doctor.lastName}">Doctor Name
+                    </option>
+                </select>
+                </div>
+
+                <!-- 显示医生的专业领域 -->
+                <div id="specializationDiv" style="display: none;">
+                    <strong>Specialization:</strong> <span id="specializationText"></span>
+                </div>
+
+            <div class="form-group">
+                <label for="appointmentDate">Select a date :</label>
+                <input type="text" class="form-control" id="appointmentDate" placeholder="Select a date"  name="appointmentDate" readonly>
+            </div>
+            <div class="form-group">
+                <label for="appointmentTime">Select a time period : </label>
+                <!-- 使用下拉菜单替代时间选择器 -->
+                <select class="form-control" id="appointmentTime" name="appointmentTime" disabled>
+                    <option value="" disabled selected>Select a time</option>
+                </select>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary" disabled>Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- 引入必要的 JS 库 -->
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- jQuery UI -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        let availableDates = [];
+        let dateToTimesMap = {};
+
+        let selectElement = document.getElementById("doctorId");
+
+        // 监听医生选择的变化
+        selectElement.addEventListener('change', function () {
+            let selectedOption = selectElement.options[selectElement.selectedIndex];
+            let specialization = selectedOption.getAttribute("data-specialization");
+
+            if (specialization) {
+                document.getElementById("specializationText").textContent = specialization;
+                document.getElementById("specializationDiv").style.display = "block";
+            } else {
+                document.getElementById("specializationDiv").style.display = "none";
+            }
+
+            let doctorId = selectElement.value;
+
+            loadAvailabilities(doctorId);
+        });
+
+        function loadAvailabilities(doctorId) {
+            $.ajax({
+                url: '/patients/availabilities',
+                data: {doctorId: doctorId},
+                success: function (response) {
+                    console.log('Response:', response);
+
+                    let availabilities = JSON.parse(response);
+
+                    console.log('Parsed availabilities:', availabilities);
+
+                    availableDates = [];
+                    dateToTimesMap = {};
+
+                    availabilities.forEach(function (item) {
+                        let date = item.date; // 'yyyy-MM-dd'
+                        let time = item.time; // 'HH:mm'
+
+                        if (!availableDates.includes(date)) {
+                            availableDates.push(date);
+                        }
+
+                        if (!dateToTimesMap.hasOwnProperty(date)) {
+                            dateToTimesMap[date] = [];
+                        }
+                        if (item.isAvailable) {
+                            dateToTimesMap[date].push(time);
+                        }
+                    });
+
+                    console.log('Available dates:', availableDates);
+                    console.log('Date to times map:', dateToTimesMap);
+
+                    initDatepicker();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching availabilities:', error);
+                }
+            });
+        }
+
+        function initDatepicker() {
+            $("#appointmentDate").datepicker('destroy');
+            $("#appointmentDate").datepicker({
+                dateFormat: 'yy-mm-dd', // 确保日期格式一致
+                minDate: 0,
+                maxDate: '+1M',
+                beforeShowDay: function (date) {
+                    let dateString = $.datepicker.formatDate('yy-mm-dd', date);
+                    if (availableDates.includes(dateString)) {
+                        return [true, "", "Available"];
+                    } else {
+                        return [false, "", "Unavailable"];
+                    }
+                },
+                onSelect: function (dateText, inst) {
+                    let selectedDate = dateText;
+                    console.log('Selected date:', selectedDate);
+                    initTimeSelect(selectedDate);
+                }
+            });
+            $("#appointmentDate").val('');
+            $("#appointmentTime").val('');
+            $("#appointmentTime").prop('disabled', true);
+            $('button[type="submit"]').prop('disabled', true);
+        }
+
+        function initTimeSelect(selectedDate) {
+            let availableTimes = dateToTimesMap[selectedDate];
+            console.log('Available times for selected date:', availableTimes);
+
+            let timeSelect = $("#appointmentTime");
+            timeSelect.empty(); // 清空之前的选项
+
+            if (!availableTimes || availableTimes.length === 0) {
+                console.log('No available times for the selected date.');
+                timeSelect.prop('disabled', true);
+                $('button[type="submit"]').prop('disabled', true);
+                return;
+            }
+
+            // 添加默认选项
+            timeSelect.append('<option value="" disabled selected>Select a time</option>');
+
+            // 添加可用的时间选项
+            availableTimes.forEach(function (time) {
+                timeSelect.append('<option value="' + time + '">' + time + '</option>');
+            });
+
+            timeSelect.prop('disabled', false);
+            $('button[type="submit"]').prop('disabled', true);
+
+            // 监听时间选择的变化
+            timeSelect.off('change').on('change', function () {
+                if ($(this).val()) {
+                    $('button[type="submit"]').prop('disabled', false);
+                } else {
+                    $('button[type="submit"]').prop('disabled', true);
+                }
+            });
+        }
+    });
+    /*]]>*/
+</script>
+</body>
+</html>

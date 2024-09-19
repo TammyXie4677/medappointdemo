@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin-Create New Availability</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body class="d-flex align-items-center justify-content-center">
+<div class="container-sm">
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
+    <h1>Create New Availability</h1>
+
+    <div class="container">
+        <form th:action="@{/admins/availabilities/savegeneral}" th:object="${availability}" method="post">
+            <!-- Doctor Selection -->
+            <div class="form-group mb-3">
+                <label for="doctor">Choose a Doctor:</label>
+                <select id="doctor" name="doctor" class="form-control" th:field="*{doctor}" required>
+                    <option value="" disabled selected>Select a doctor</option>
+                    <option th:each="doctor : ${doctors}"
+                            th:value="${doctor.id}"
+                            th:data-specialization="${doctor.specialization}"
+                            th:text="${doctor.firstName + ' ' + doctor.lastName}">
+                        Doctor Name
+                    </option>
+                </select>
+            </div>
+
+            <!-- Day of the Week (Dropdown) -->
+            <div class="form-group mb-3">
+                <label for="dayOfWeek">Select the Day of the Week</label>
+                <select id="dayOfWeek" name="dayOfWeek" class="form-control" th:field="*{dayOfWeek}" required>
+                    <option value="" disabled selected>Select a day</option>
+                    <option value="0">Sunday</option>
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                </select>
+            </div>
+
+            <!-- Start Time (Whole Hour) -->
+            <div class="form-group mb-3">
+                <label for="startTime">Enter the Start Time (Whole Hour), like 09:00</label>
+                <input type="text" class="form-control" id="startTime" placeholder="Enter the start of time" th:field="*{startTime}" required>
+            </div>
+
+            <!-- End Time (Whole Hour) -->
+            <div class="form-group mb-3">
+                <label for="endTime">Enter the End Time (Whole Hour), link 14:00</label>
+                <input type="text" class="form-control" id="endTime" th:field="*{endTime}" placeholder="Enter the end of time" required>
+            </div>
+
+            <!-- Is Available -->
+            <div class="form-group mb-3">
+                <label for="isAvailable">Is Available</label>
+                <input type="checkbox" class="form-check-input" id="isAvailable" th:field="*{isAvailable}">
+            </div>
+
+            <div class="text-center mx-5">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="/admins/availabilities" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

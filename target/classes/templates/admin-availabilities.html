@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin-availabilities</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+</head>
+<body class="d-flex align-items-center justify-content-center">
+<div class="container-sm">
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <p th:text="${message}"></p>
+    </div>
+    <h1>Admin-availabilities List</h1>
+    <!--  <div th:if="${#authorization.expression('isAuthenticated() and !hasAuthority(''ROLE_ANONYMOUS'')')}">-->
+    <div>
+        <!--    <h3>Welcome, <span th:text="${#authentication.name}"></span></h3>-->
+        <h3>Welcome, admin : <span th:text="${adminUser.firstName + ' ' + adminUser.lastName}"/></h3>
+
+        <div><p>There are <span th:text="${#lists.size(doctors)}"></span> doctor(s) in the system.</p>
+
+            <div><p>The <span class="text-primary">General</span> Scheduling Rules: </p></div>
+            <div th:if="${availabilitiesGroupedByDoctorGeneral != null}">
+                <div th:each="entry : ${availabilitiesGroupedByDoctorGeneral.entrySet()}">
+                    <!-- display the specific doctor's full name -->
+                    <h3 th:text="${entry.key.firstName + ' ' + entry.key.lastName}">Doctor Name</h3>
+
+                    <!-- display a specific doctor's general schedule -->
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date(must be null)</th>
+                            <th>DayOfWeek</th>
+                            <th>StartTime</th>
+                            <th>EndTime</th>
+                            <th>Available</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="availability : ${entry.value}">
+                            <td th:text="${availability.id}">ID</td>
+                            <td th:text="${availability.date}">Date</td>
+                            <td th:switch="${availability.dayOfWeek}">
+                                <span th:case="0">Sunday</span>
+                                <span th:case="1">Monday</span>
+                                <span th:case="2">Tuesday</span>
+                                <span th:case="3">Wednesday</span>
+                                <span th:case="4">Thursday</span>
+                                <span th:case="5">Friday</span>
+                                <span th:case="6">Saturday</span>
+                            </td>
+                            <td th:text="${availability.startTime}">StartTime</td>
+                            <td th:text="${availability.endTime}">EndTime</td>
+                            <td th:text="${availability.isAvailable}">Available</td>
+                            <td>
+                                <a th:href="@{/admins/availabilities/deletegeneral/{id}(id=${availability.id})}"
+                                class="btn btn-danger">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div th:if="${availabilitiesGroupedByDoctorGeneral == null}">
+            <div>
+                <p>Not <span class="text-primary">General</span> schedules yet.</p>
+            </div>
+        </div>
+
+        <div>
+            <a href="/admins/availabilities/newgeneral">Create new general availability</a>
+        </div>
+
+        <div><p>The <span class="text-danger">Specific</span> Scheduling Rules: </p></div>
+
+        <div th:if="${availabilitiesGroupedByDoctorSpecific != null}">
+            <div th:each="entrys : ${availabilitiesGroupedByDoctorSpecific.entrySet()}">
+                <!-- display the specific doctor's full name -->
+                <h3 th:text="${entrys.key.firstName + ' ' + entrys.key.lastName}">Doctor Name</h3>
+
+                <!-- display a specific doctor's general schedule -->
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date(must NOT null)</th>
+                        <th>DayOfWeek</th>
+                        <th>StartTime</th>
+                        <th>EndTime</th>
+                        <th>Available</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="availabilitys : ${entrys.value}">
+                        <td th:text="${availabilitys.id}">ID</td>
+                        <td th:text="${availabilitys.date}">Date</td>
+                        <td th:switch="${availabilitys.dayOfWeek}">
+                            <span th:case="0">Sunday</span>
+                            <span th:case="1">Monday</span>
+                            <span th:case="2">Tuesday</span>
+                            <span th:case="3">Wednesday</span>
+                            <span th:case="4">Thursday</span>
+                            <span th:case="5">Friday</span>
+                            <span th:case="6">Saturday</span>
+                        </td>
+                        <td th:text="${availabilitys.startTime}">StartTime</td>
+                        <td th:text="${availabilitys.endTime}">EndTime</td>
+                        <td th:text="${availabilitys.isAvailable}">Available</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div th:if="${availabilitiesGroupedByDoctorSpecific == null}">
+        <div>
+            <p>Not <span class="text-danger">Specific</span> schedules yet.</p>
+        </div>
+    </div>
+
+        <div>
+            <a href="/admins/availabilities/newspecific">Create new specific availability</a>
+        </div>
+
+
+    </div>
+</div>
+
+</body>
+</html>

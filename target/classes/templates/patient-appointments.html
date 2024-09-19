@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Patient - Appointment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (for datepicker and timepicker) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery UI CSS and JS for datepicker -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Timepicker plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
+
+</head>
+<body class="d-flex align-items-center justify-content-center">
+<div class="container-sm">
+    <h1>Select the date and time for appointment</h1>
+
+    <div>
+
+        <h3>Welcome</h3>
+        <p>Today is : <span th:text="${today}"/> , and you could select the date is due to : <span th:text="${dueday}"/>
+            , that means you could book an appointment in <span th:text="${daysBetween}" />  days .  </p>
+
+    </div>
+
+
+
+    <div class="container">
+        <div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>StartTime</th>
+                    <th>isAvailable</th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="availablity : ${availabilitiesForDoctor}">
+                    <td th:text="${availablity.date}">Date</td>
+                    <td th:text="${availablity.time}">StartTime</td>
+                    <td th:text="${availablity.isAvailable}">isAvailable</td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="text-center mb-4">Select date and time for your appointment</h2>
+        <form action="">
+
+            <div class="form-group">
+                <label for="doctor">Choose a Doctor:</label>
+                <select id="doctor" name="doctor" class="form-control">
+                    <option value="" disabled selected>Select a doctor</option>
+                    <!-- 遍历 doctors 列表 -->
+                    <option th:each="doctor : ${doctors}"
+                            th:value="${doctor.id}"
+                            th:data-specialization="${doctor.specialization}"
+                            th:text="${doctor.firstName + ' ' + doctor.lastName}">Doctor Name</option>
+                </select>
+            </div>
+
+            <div id="specializationDiv" style="display: none; margin-top: 10px;">
+                <strong>Specialization:</strong> <span id="specializationText"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="appointmentDate" class="col-sm-2 col-form-label">Select a date :</label>
+                <div>
+                    <input type="text" class="form-control" id="appointmentDate" placeholder="Select a date">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="appointmentTime" class="col-sm-2 col-form-label">Select a time period : </label>
+                <div>
+                    <input type="text" class="form-control" id="appointmentTime" placeholder="Select a time period">
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // 定义公众假期数组（格式为 'yy-mm-dd'）
+    let holidays = ['2024-09-27', '2024-09-18'];  // 这里可以添加更多公众假期
+    $(document).ready(function () {
+        // 日期选择器
+        $("#appointmentDate").datepicker({
+            dateFormat: 'yy-mm-dd',
+            minDate: 0,  // 禁止选择过去的日期
+            maxDate: '+1M',
+            beforeShowDay: function (date) {
+                let day = date.getDay();
+                let dateString = $.datepicker.formatDate('yy-mm-dd', date);
+
+                // 禁用周六(6)和周日(0)，以及公众假期
+                if (day === 0 || day === 6 || holidays.includes(dateString)) {
+                    return [false, "", "不可选"];
+                } else {
+                    return [true, "", ""];
+                }
+            }
+        });
+        let disableTimes = ["12:00", "14:00"]
+
+        // 时间选择器
+        $("#appointmentTime").timepicker({
+            timeFormat: 'h:00 a',
+            step: 60,  // 时间间隔 60 分钟，按小时选择
+            minTime: '09:00',  // 最早时间为 9:00 AM
+            maxTime: '17:00',  // 最晚时间为 5:00 PM
+            defaultTime: '09:00',  // 默认时间为 9:00 AM
+            startTime: '09:00',  // 开始时间为 9:00 AM
+            dynamic: true,
+            dropdown: true,
+            scrollbar: true,
+            disableTimeRanges: disableTimes
+
+        });
+    });
+</script>
+
+<script>
+    // 等 DOM 完全加载后执行脚本
+    document.addEventListener('DOMContentLoaded', function () {
+        let selectElement = document.getElementById("doctor");
+
+        // 监听 select 的变化
+        selectElement.addEventListener('change', function () {
+            // 获取下拉框的选定项
+            let selectedOption = selectElement.options[selectElement.selectedIndex];
+
+            // 获取医生的 specialization 信息 (即 data-specialization 属性)
+            let specialization = selectedOption.getAttribute("data-specialization");
+
+            // 如果选择了医生，显示 specialization 信息
+            if (specialization) {
+                document.getElementById("specializationText").textContent = specialization;
+                document.getElementById("specializationDiv").style.display = "block";
+            } else {
+                // 如果未选择医生，则隐藏
+                document.getElementById("specializationDiv").style.display = "none";
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
