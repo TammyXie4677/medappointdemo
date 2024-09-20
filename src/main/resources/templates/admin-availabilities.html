@@ -13,9 +13,7 @@
         <p th:text="${message}"></p>
     </div>
     <h1>Admin-availabilities List</h1>
-    <!--  <div th:if="${#authorization.expression('isAuthenticated() and !hasAuthority(''ROLE_ANONYMOUS'')')}">-->
     <div>
-        <!--    <h3>Welcome, <span th:text="${#authentication.name}"></span></h3>-->
         <h3>Welcome, Admin user: <span th:text="${user.lastName}"/></h3>
 
         <div><p>There are <span th:text="${#lists.size(doctors)}"></span> doctor(s) in the system.</p>
@@ -23,7 +21,6 @@
             <div><p>The <span class="text-primary">General</span> Scheduling Rules: </p></div>
             <div th:if="${availabilitiesGroupedByDoctorGeneral != null}">
                 <div th:each="entry : ${availabilitiesGroupedByDoctorGeneral.entrySet()}">
-                    <!-- display the specific doctor's full name -->
                     <h3 th:text="${entry.key.firstName + ' ' + entry.key.lastName}">Doctor Name</h3>
 
                     <!-- display a specific doctor's general schedule -->
@@ -66,7 +63,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
 
         <div th:if="${availabilitiesGroupedByDoctorGeneral == null}">
@@ -96,9 +92,9 @@
                         <th>StartTime</th>
                         <th>EndTime</th>
                         <th>Available</th>
-
                     </tr>
                     </thead>
+
                     <tbody>
                     <tr th:each="availabilitys : ${entrys.value}">
                         <td th:text="${availabilitys.id}">ID</td>
@@ -115,7 +111,6 @@
                         <td th:text="${availabilitys.startTime}">StartTime</td>
                         <td th:text="${availabilitys.endTime}">EndTime</td>
                         <td th:text="${availabilitys.isAvailable}">Available</td>
-
                     </tr>
                     </tbody>
                 </table>
@@ -136,7 +131,7 @@
 
 
 </div>
-</div>
+
 
 </body>
 </html>

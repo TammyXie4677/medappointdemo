@@ -108,7 +108,7 @@ public class AdminController {
 
     @GetMapping("/statistics")
     public String viewStatistics(Model model){
-        return "statistics";
+        return "admin-statistics";
     }
 
     @GetMapping("/statistics/appointments")
