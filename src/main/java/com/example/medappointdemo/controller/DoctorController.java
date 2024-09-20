@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -33,13 +34,20 @@ public class DoctorController {
     @GetMapping({"/", "/index", "/?continue",""})
     public String viewDoctorHomepage(Principal principal, Model model){
         String email = principal.getName();
-        User Doctor = doctorService.getDoctorByEmail(email);
-        String toAppLink = "/appointments";
-        String doctorId = Doctor.getId().toString();
-        toAppLink = "/doctors/" + doctorId + toAppLink;
-        model.addAttribute("doctor", Doctor);
-        model.addAttribute("toAppLink", toAppLink);
-        return "doctor-homepage";
+        Optional<User> Doctor = doctorService.getDoctorByEmail(email);
+        if(Doctor.isPresent()){
+            model.addAttribute("doctor", Doctor.get());
+            String toAppLink = "/appointments";
+            String doctorId = Doctor.get().getId().toString();
+            toAppLink = "/doctors/" + doctorId + toAppLink;
+
+            model.addAttribute("toAppLink", toAppLink);
+            return "doctor-homepage";
+        } else {
+            return "redirect:/logout";
+        }
+
+
     }
 
 
