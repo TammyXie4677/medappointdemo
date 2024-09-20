@@ -1,12 +1,10 @@
 package com.example.medappointdemo.controller;
 
 
+import com.amazonaws.HttpMethod;
 import com.example.medappointdemo.repository.UserRepository;
 import com.example.medappointdemo.model.*;
-import com.example.medappointdemo.service.AppointmentService;
-import com.example.medappointdemo.service.AvailabilityService;
-import com.example.medappointdemo.service.DoctorService;
-import com.example.medappointdemo.service.PatientService;
+import com.example.medappointdemo.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -48,6 +46,9 @@ public class PatientController {
     @Autowired
     private AppointmentService appointmentService;
 
+    @Autowired
+    private S3Service s3Service;
+
     @ModelAttribute
     public void addCommonAttributes(Principal principal,Model model) {
 
@@ -56,10 +57,14 @@ public class PatientController {
         model.addAttribute("patient", user);
 
         String photo = user.getPhoto();
-        if(photo == null || photo.isEmpty() ) {
-            photo = "";
+        if(photo != null && !photo.isEmpty() ) {
+            String presignedUrl = ResponseEntity.ok(s3Service.generateUrl(photo, HttpMethod.GET)).toString();
+            System.out.println(presignedUrl);
+            model.addAttribute("imgUrl", presignedUrl);
+        } else {
+            model.addAttribute("imgUrl", "");
         }
-        model.addAttribute("imgUrl", photo);
+
 
         String viewAppsLink = "/patients/viewappointments/";
         String makeAppLinke = "/appointment";
