@@ -58,7 +58,6 @@ public class PatientController {
         String photo = user.getPhoto();
         if(photo.isEmpty() || photo == null) {
             photo = "/public/avatar.png";
-            // photo = "https://myherokubucket.s3.amazonaws.com/avatar.png";
         }
         model.addAttribute("imgUrl", photo);
 
