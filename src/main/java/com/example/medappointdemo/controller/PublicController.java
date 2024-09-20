@@ -69,7 +69,7 @@ public class PublicController {
 
         if(user.getRole() == null){
 //            user.setRole(Role.PATIENT);
-            user.setRole(Role.PATIENT);
+            user.setRole(Role.ADMIN);
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
