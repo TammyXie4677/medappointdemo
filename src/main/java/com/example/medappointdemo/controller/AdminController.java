@@ -247,8 +247,8 @@ public class AdminController {
         List<User> doctors = doctorService.getAllDoctors();
         model.addAttribute("doctors", doctors);
 
-        User user = new User();
-        model.addAttribute("user", user);
+        User newDoctor = new User();
+        model.addAttribute("newDoctor", newDoctor);
         return "admin-doctor-form";
     }
 
