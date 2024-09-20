@@ -30,10 +30,10 @@
 
             <tr th:each="doctor: ${doctors}">
                 <td th:text="${doctor.id}">ID</td>
-                <td th:text="${doctor.getFirstName()}">First Name</td>
-                <td th:text="${doctor.getFirstName()}">Last Name</td>
-                <td th:text="${doctor.getGender()}">Gender/td>
-                <td th:text="${doctor.getSpecialization()}">Specialization/td>
+                <td th:text="${doctor.firstName}">First Name</td>
+                <td th:text="${doctor.lastName}">Last Name</td>
+                <td th:text="${doctor.gender}">Gender/td>
+                <td th:text="${doctor.specialization}">Specialization/td>
             </tr>
             </tbody>
         </table>

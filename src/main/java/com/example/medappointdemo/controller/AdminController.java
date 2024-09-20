@@ -242,7 +242,7 @@ public class AdminController {
         return "redirect:/admins/availabilities";
     }
 
-    @GetMapping("/@doctor-registration")
+    @GetMapping("/doctor-registration")
     public String showRegistrationForm(Model model){
         List<User> doctors = doctorService.getAllDoctors();
         model.addAttribute("doctors", doctors);
