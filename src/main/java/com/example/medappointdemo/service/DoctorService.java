@@ -24,7 +24,7 @@ public class DoctorService {
         return doctorRepository.findDoctorByUserId(id).orElse(null);
     }
 
-    public User getDoctorByEmail(String email) {
+    public Optional<User> getDoctorByEmail(String email) {
 
         return doctorRepository.findDoctorByEmail(email);
     }
@@ -40,6 +40,7 @@ public class DoctorService {
     public List<User> getAllDoctors() {
         return doctorRepository.findAllDoctors();
     }
+
 
 
 

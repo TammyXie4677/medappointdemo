@@ -7,6 +7,7 @@ import com.example.medappointdemo.model.Appointment;
 
 import com.example.medappointdemo.model.Availability;
 import com.example.medappointdemo.model.User;
+import com.example.medappointdemo.repository.DoctorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ public class AdminService {
     private AppointmentRepository appointmentRepository;
     @Autowired
     private AvailabilityRepository availabilityRepository;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
 
     public User getAdminById(Long id) {
@@ -76,17 +79,19 @@ public class AdminService {
         return availabilityRepository.findSpecificAvailability(id,date,dayOfWeek,startTime,endTime);
     }
 
-    @Transactional // 确保删除操作在事务中执行
+    @Transactional
     public void deleteAvailabilityByIdGeneral(Long id) {
         adminRepository.deleteByIdWithoutDate(id);
     }
 
-    @Transactional // 确保删除操作在事务中执行
+    @Transactional
     public void deleteAvailabilityByIdGSpecific(Long id) {
         adminRepository.deleteByIdWithDate(id);
     }
 
-
+    public Optional<User> getDoctorByFirstNameAndLastName(String firstName, String lastName) {
+        return doctorRepository.findDoctorByFirstNameAndLastName(firstName, lastName);
+    }
 
 
 

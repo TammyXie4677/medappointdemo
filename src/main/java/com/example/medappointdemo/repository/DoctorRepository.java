@@ -15,5 +15,7 @@ public interface DoctorRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.role = 'DOCTOR' and u.id = :id")
     Optional<User> findDoctorByUserId(@Param("id") Long id);
 
-    User findDoctorByEmail(String email);
+    Optional<User> findDoctorByFirstNameAndLastName(String firstName, String lastName);
+
+    Optional<User> findDoctorByEmail(String email);
 }

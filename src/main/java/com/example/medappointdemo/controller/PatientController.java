@@ -58,9 +58,9 @@ public class PatientController {
 
         String photo = user.getPhoto();
         if(photo != null && !photo.isEmpty() ) {
-            String presignedUrl = s3Service.generateUrl(photo, HttpMethod.GET);
-            System.out.println(presignedUrl);
-            model.addAttribute("imgUrl", presignedUrl);
+            String resignedUrl = s3Service.generateUrl(photo, HttpMethod.GET);
+            System.out.println(resignedUrl);
+            model.addAttribute("imgUrl", resignedUrl);
         } else {
             model.addAttribute("imgUrl", "");
         }

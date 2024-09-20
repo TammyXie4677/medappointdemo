@@ -1,6 +1,7 @@
 package com.example.medappointdemo.service;
 
 import com.amazonaws.HttpMethod;
+import com.amazonaws.Request;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,13 @@ public class S3Service {
         msec += 1000 * 60 * 10; // 10 分钟
         expiration.setTime(msec);
 
-        // 创建生成预签名 URL 的请求
+        // build request
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 new GeneratePresignedUrlRequest(bucketName, filename)
                         .withMethod(httpMethod)
                         .withExpiration(expiration);
 
-        // 生成预签名 URL
+        // build URL
         URL url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
         return url.toString();
     }

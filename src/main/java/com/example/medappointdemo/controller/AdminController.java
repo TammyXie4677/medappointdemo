@@ -1,6 +1,9 @@
 package com.example.medappointdemo.controller;
 
 
+import com.amazonaws.HttpMethod;
+import com.example.medappointdemo.model.Role;
+import com.example.medappointdemo.repository.DoctorRepository;
 import com.example.medappointdemo.repository.UserRepository;
 import com.example.medappointdemo.service.AdminService;
 import com.example.medappointdemo.model.Appointment;
@@ -11,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.medappointdemo.service.DoctorService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,9 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -40,22 +42,49 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private AvailabilityService availabilityService;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
-    @GetMapping({"/", "/index", "/?continue",""})
-    public String index(Principal principal, Model model) {
+    @ModelAttribute
+    public void addCommonAttributes(Principal principal,Model model) {
+
         String email = principal.getName();
         User user = userRepository.findByEmail(email);
-        model.addAttribute("admin", user);
+        model.addAttribute("user", user);
+
+        String photo = "";
+        model.addAttribute("imgUrl", photo);
+
+
+
+        String vie = "/patients/viewappointments/";
+        String makeAppLinke = "/appointment";
+        String patientId = user.getId().toString();
         String viewStatisticsLink = "/admins/statistics";
         String viewEmailLink = "/admins/emails";
         String viewAvailabilityLink = "/admins/availabilities/";
         String viewAppoinetmentsLink = "/admins/appointments/";
-        String adminId = user.getId().toString();
+//        String adminId = user.getId().toString();
+        Map<String, String> controllerLinks = new LinkedHashMap<>();
+        controllerLinks.put("viewStatisticsLink", viewStatisticsLink);
+        controllerLinks.put("viewEmailLink", viewEmailLink);
+        controllerLinks.put("viewAvailabilityLink", viewAvailabilityLink);
+        controllerLinks.put("viewAppointmentsLink", viewAppoinetmentsLink);
+        model.addAttribute("controllerLinks", controllerLinks);
 
-        model.addAttribute("viewStatisticsLink", viewStatisticsLink);
-        model.addAttribute("viewEmailLink",viewEmailLink);
-        model.addAttribute("viewAvailabilityLink",viewAvailabilityLink);
-        model.addAttribute("viewAppoinetmentsLink",viewAppoinetmentsLink);
+        ArrayList<String> defaultLinks = new ArrayList<>();
+        defaultLinks.add("Admin Home");
+        defaultLinks.add("/admins/");
+        String editInformationLink = "/edit";
+
+        model.addAttribute("defaultLinks", defaultLinks);
+        model.addAttribute("editInformationLink", editInformationLink);
+    }
+
+
+    @GetMapping({"/", "/index", "/?continue",""})
+    public String index(Principal principal, Model model) {
+
         return "admin-home";
     }
 
@@ -212,5 +241,57 @@ public class AdminController {
 
         return "redirect:/admins/availabilities";
     }
+
+    @GetMapping("/@doctor-registration")
+    public String showRegistrationForm(Model model){
+        List<User> doctors = doctorService.getAllDoctors();
+        model.addAttribute("doctors", doctors);
+
+        User user = new User();
+        model.addAttribute("user", user);
+        return "admin-doctor-form";
+    }
+
+    @PostMapping("/doctor-registration")
+    public String processRegister(@Valid User user, BindingResult result,RedirectAttributes redirectAttributes, Model model) {
+        if (result.hasErrors()) {
+            log.debug(String.valueOf(result));
+            return "admin-doctor-form";
+        }
+
+        if (!user.getPassword().equals(user.getPassword2())) {
+            result.rejectValue("password2", "passwordsDoNotMatch", "Passwords must match");
+            return "admin-doctor-form";
+        }
+
+        Optional<User> doctorByFirstNameAndLastName = adminService.getDoctorByFirstNameAndLastName(user.getFirstName(), user.getLastName());
+        if(doctorByFirstNameAndLastName.isPresent()){
+            result.rejectValue("firstName", "usernameExists", "Username already exists");
+            return "admin-doctor-form";
+        }
+
+        Optional<User> doctorByEmail = doctorService.getDoctorByEmail(user.getEmail());
+        if (doctorByEmail.isPresent()) {
+            result.rejectValue("email", "emailExists", "Email already exists");
+            return "admin-doctor-form";
+        }
+
+        if(user.getRole() == null){
+//            user.setRole(Role.PATIENT);
+            user.setRole(Role.DOCTOR);
+        }
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
+        user.setActive(true);
+
+        userRepository.save(user);
+        redirectAttributes.addFlashAttribute("message", "Information updated successfully!");
+        return "redirect:/doctor-registration";
+
+    }
+
 
 }
