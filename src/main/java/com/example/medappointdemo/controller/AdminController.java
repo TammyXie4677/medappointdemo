@@ -245,7 +245,9 @@ public class AdminController {
     @GetMapping("/doctor-registration")
     public String showRegistrationForm(Model model){
         List<User> doctors = doctorService.getAllDoctors();
-        model.addAttribute("doctors", doctors);
+        if(!doctors.isEmpty()) {
+            model.addAttribute("doctors", doctors);
+        }
 
         User newDoctor = new User();
         model.addAttribute("newDoctor", newDoctor);
