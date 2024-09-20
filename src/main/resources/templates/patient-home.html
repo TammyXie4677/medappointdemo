@@ -16,7 +16,7 @@
     </div>
 
     <div class="hero-unit">
-        <h3>Welcome, patient: <span th:text="${patient.firstName}"/></h3>
+        <h3>Welcome, patient: <span th:text="${user.firstName}"/></h3>
         <div th:if="${imgUrl == '/public/avatar.png'}">
             <p>
                 To finish you registration, click <a style="color: red;" th:href="${editInformationLink}">HERE</a> to complete your details.

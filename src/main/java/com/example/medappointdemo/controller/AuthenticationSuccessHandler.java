@@ -46,31 +46,23 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         request.getSession().setAttribute("firstName", user.getFirstName());
         request.getSession().setAttribute("lastName", user.getLastName());
 
-        String targetUrl = determineTargetUrl(authentication);
-        setDefaultTargetUrl(targetUrl);        
+        if (authentication.getAuthorities().stream()
+            .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
+            setDefaultTargetUrl("/admins/");
+        } else if (authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_DOCTOR"))) {
+            setDefaultTargetUrl("/doctors/");
+        } else if (authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_PATIENT"))) {
+            setDefaultTargetUrl("/patients/");
+        } else {
+            setDefaultTargetUrl("/home");
+        }
 
         super.onAuthenticationSuccess(request, response, authentication);
     }
 
-    protected String determineTargetUrl(Authentication authentication) {
-        return authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .filter(role -> role.equals("ADMIN") || role.equals("DOCTOR") || role.equals("PATIENT"))
-                .findFirst()
-                .map(role -> {
-                    switch (role) {
-                    case "ADMIN":
-                        return "/admins/";
-                    case "DOCTOR":
-                        return "/doctors/";
-                    case "PATIENT":
-                        return "/patients/";
-                    default:
-                        return "/home";
-                    }
-                })
-                .orElse("/home");
-    }
+
 
 
 }

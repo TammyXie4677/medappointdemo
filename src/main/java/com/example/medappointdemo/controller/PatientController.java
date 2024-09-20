@@ -54,7 +54,7 @@ public class PatientController {
 
         String email = principal.getName();
         User user = userRepository.findByEmail(email);
-        model.addAttribute("patient", user);
+        model.addAttribute("user", user);
 
         String photo = user.getPhoto();
         if(photo != null && !photo.isEmpty() ) {
