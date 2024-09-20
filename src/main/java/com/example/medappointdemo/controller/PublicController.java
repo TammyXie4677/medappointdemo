@@ -26,7 +26,7 @@ public class PublicController {
     @Autowired
     private UserRepository userRepository;
 
-    String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
+    // String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
 
 
     @GetMapping({"/home","/","/index",""})
@@ -36,7 +36,7 @@ public class PublicController {
 
     @GetMapping("/login")
     public String loginPage() {
-        return "login-form"; // 这将返回 src/main/resources/templates/login-form.html
+        return "login-form";
     }
 
     @GetMapping("/register")
