@@ -62,14 +62,14 @@ public class AdminController {
         String patientId = user.getId().toString();
         String viewStatisticsLink = "/admins/statistics";
         String viewEmailLink = "/admins/emails";
-        String viewAvailabilityLink = "/admins/availabilities/";
-        String viewAppoinetmentsLink = "/admins/appointments/";
+        String viewAvailabilityLink = "/admins/availabilities";
+        String viewAppoinetmentsLink = "/admins/appointments";
 //        String adminId = user.getId().toString();
         Map<String, String> controllerLinks = new LinkedHashMap<>();
-        controllerLinks.put("viewStatisticsLink", viewStatisticsLink);
-        controllerLinks.put("viewEmailLink", viewEmailLink);
-        controllerLinks.put("viewAvailabilityLink", viewAvailabilityLink);
-        controllerLinks.put("viewAppointmentsLink", viewAppoinetmentsLink);
+        controllerLinks.put("Statistics", viewStatisticsLink);
+        controllerLinks.put("Email settings", viewEmailLink);
+        controllerLinks.put("view Availabilities", viewAvailabilityLink);
+        controllerLinks.put("view Appointments", viewAppoinetmentsLink);
         model.addAttribute("controllerLinks", controllerLinks);
 
         ArrayList<String> defaultLinks = new ArrayList<>();

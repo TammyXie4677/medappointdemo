@@ -7,8 +7,9 @@
 
 
 </head>
-<body class="d-flex align-items-center justify-content-center">
-<div class="container-sm">
+<body>
+<div th:replace="fragments/logged-header :: header"></div>
+<div class="container my-5">
     <div th:if="${message}" class="alert alert-success" role="alert">
         <p th:text="${message}"></p>
     </div>
