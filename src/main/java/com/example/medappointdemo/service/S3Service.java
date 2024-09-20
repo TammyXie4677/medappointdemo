@@ -2,11 +2,11 @@ package com.example.medappointdemo.service;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.net.URL;
 
@@ -21,13 +21,21 @@ public class S3Service {
     private String bucketName;
 
     public String generateUrl(String filename, HttpMethod httpMethod) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.MINUTE, 10);
-        URL url = amazonS3.generatePresignedUrl(bucketName, filename, cal.getTime(), httpMethod);
+        Date expiration = new Date();
+        long msec = expiration.getTime();
+        msec += 1000 * 60 * 10; // 10 分钟
+        expiration.setTime(msec);
+
+        // 创建生成预签名 URL 的请求
+        GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                new GeneratePresignedUrlRequest(bucketName, filename)
+                        .withMethod(httpMethod)
+                        .withExpiration(expiration);
+
+        // 生成预签名 URL
+        URL url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
         return url.toString();
     }
-
 
 }
 
