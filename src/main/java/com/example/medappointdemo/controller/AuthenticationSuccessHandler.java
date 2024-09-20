@@ -6,6 +6,7 @@ import com.example.medappointdemo.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.GrantedAuthority;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -33,30 +34,40 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String email = userDetails.getUsername();
-
         System.out.println("Patient's Email is : " + email);
 
         User user = userRepository.findByEmail(email);
+        if(user == null) {
+            throw new ServletException("User not found");
+        }
 
         // add the mail as user
         request.getSession().setAttribute("user", email);
         request.getSession().setAttribute("firstName", user.getFirstName());
         request.getSession().setAttribute("lastName", user.getLastName());
 
-        if (authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
-            setDefaultTargetUrl("/admin/");
-        } else if (authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_DOCTOR")))  {
-            setDefaultTargetUrl("/doctors/");
-        } else if (authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_PATIENT"))) {
-            setDefaultTargetUrl("/patients/");
-        } else {
-            setDefaultTargetUrl("/home");
-        }
+        String targetUrl = determineTargetUrl(authentication);
+        setDefaultTargetUrl(targetUrl);        
 
         super.onAuthenticationSuccess(request, response, authentication);
+    }
+
+    protected String determineTargetUrl(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority:: getAuthority)
+                .filter(role -> role.equals("ROLE_ADMIN") || role.equals("ROLE_DOCTOR") || role.equals("ROLE_PATIENT"))
+                .findFirst()
+                .map(role -> {
+                    if (role.equals("ROLE_ADMIN")) {
+                        return "/admins";
+                    } else if (role.equals("ROLE_DOCTOR")) {
+                        return "/doctors";
+                    } else if (role.equals("ROLE_PATIENT")) {
+                        return "/patients";
+                    }
+                    return "/home";
+                })
+                .orElse("/home");
     }
 
 
