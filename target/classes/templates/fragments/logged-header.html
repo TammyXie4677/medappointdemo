@@ -29,7 +29,7 @@
             <!-- 右侧的 Logout 和 Avatar -->
             <div th:if="${imgUrl}" class="ms-auto d-flex align-items-center">
                 <!-- 注意 th:src 的语法 -->
-                <img th:src="@{${imgUrl}}" alt="Avatar" class="rounded-circle" style="width: 36px; height: 36px;">
+                <img th:src="@{imgUrl}" alt="Avatar" class="rounded-circle" style="width: 36px; height: 36px;">
                 <a href="#" class="btn btn-outline-danger ms-3">Logout</a>
             </div>
         </div>
