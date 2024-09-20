@@ -46,7 +46,11 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         request.getSession().setAttribute("firstName", user.getFirstName());
         request.getSession().setAttribute("lastName", user.getLastName());
 
-        if (authentication.getAuthorities().stream()
+        String continueUrl = request.getParameter("continue");
+        if (continueUrl != null && !continueUrl.isEmpty()) {
+            // Redirect to the continue URL if present
+            setDefaultTargetUrl(continueUrl);
+        } else if (authentication.getAuthorities().stream()
             .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
             setDefaultTargetUrl("/admins/");
         } else if (authentication.getAuthorities().stream()
