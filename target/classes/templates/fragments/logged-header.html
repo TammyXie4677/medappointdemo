@@ -6,7 +6,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <!-- 如果 controllerLinks 存在 -->
+            
             <div th:if="${controllerLinks}">
                 <div th:if="${imgUrl != '/pubic/avatar.png'}" class="navbar-nav">
                     <div th:each="link : ${controllerLinks}">
@@ -19,18 +19,19 @@
                 </div>
             </div>
 
-            <!-- 如果 controllerLinks 不存在 -->
+            
             <div th:unless="${controllerLinks}" class="navbar-nav">
                 <a class="nav-link active" aria-current="page" href="/home">Home</a>
                 <a class="nav-link" href="/features">Features</a>
             </div>
 
 
-            <!-- 右侧的 Logout 和 Avatar -->
+            
             <div th:if="${imgUrl}" class="ms-auto d-flex align-items-center">
-                <!-- 注意 th:src 的语法 -->
+                <a href="/edit">
                 <img th:src="@{${imgUrl}}" alt="Avatar" class="rounded-circle" style="width: 36px; height: 36px;">
-                <a href="#" class="btn btn-outline-danger ms-3">Logout</a>
+                </a>
+                <a href="/logout" class="btn btn-outline-danger ms-3">Logout</a>
             </div>
         </div>
     </div>

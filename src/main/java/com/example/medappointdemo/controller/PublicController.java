@@ -100,10 +100,10 @@ public class PublicController {
 
     @PostMapping("/edit")
     public String processEdit(@RequestHeader(value = "referer", required = false) String referer,@Valid User user, BindingResult result, Principal principal, RedirectAttributes redirectAttributes, Model model){
-        if(principal == null){
-            redirectAttributes.addFlashAttribute("message", "Please login first!");
-            return("redirect:/login");
+        if (result.hasErrors()) {
+            return("redirect:/logout");
         }
+        
 
         String email = principal.getName();
         User userInDb = userRepository.findByEmail(email);
