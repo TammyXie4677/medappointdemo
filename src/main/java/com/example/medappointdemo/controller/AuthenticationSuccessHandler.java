@@ -54,18 +54,20 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
     protected String determineTargetUrl(Authentication authentication) {
         return authentication.getAuthorities().stream()
-                .map(GrantedAuthority:: getAuthority)
+                .map(GrantedAuthority::getAuthority)
                 .filter(role -> role.equals("ROLE_ADMIN") || role.equals("ROLE_DOCTOR") || role.equals("ROLE_PATIENT"))
                 .findFirst()
                 .map(role -> {
-                    if (role.equals("ROLE_ADMIN")) {
+                    switch (role) {
+                    case "ROLE_ADMIN":
                         return "/admins/";
-                    } else if (role.equals("ROLE_DOCTOR")) {
+                    case "ROLE_DOCTOR":
                         return "/doctors/";
-                    } else if (role.equals("ROLE_PATIENT")) {
+                    case "ROLE_PATIENT":
                         return "/patients/";
+                    default:
+                        return "/home";
                     }
-                    return "/home";
                 })
                 .orElse("/home");
     }

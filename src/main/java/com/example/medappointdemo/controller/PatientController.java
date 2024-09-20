@@ -49,7 +49,7 @@ public class PatientController {
     private AppointmentService appointmentService;
 
     @ModelAttribute
-    public void addImgUrl(Principal principal,Model model) {
+    public void addCommonAttributes(Principal principal,Model model) {
 
         String email = principal.getName();
         User user = userRepository.findByEmail(email);
@@ -82,7 +82,6 @@ public class PatientController {
 
     @GetMapping({"/", "/index", "/?continue",""})
     public String viewPatientHomePage(Model model) {
-
         return "patient-home";
     }
 
@@ -107,15 +106,13 @@ public class PatientController {
         long daysBetween = ChronoUnit.DAYS.between(today.plusDays(1), dueday);
         model.addAttribute("daysBetween", daysBetween);
 
-        // 获取医生的可用时间段，根据需要替换医生ID
-        Long doctorId = 2L; // 您可以根据需要设置默认医生ID
+        Long doctorId = 2L; 
         List<Availability> generalAvailabilities = availabilityService.getAvailabilityForDoctor(doctorId);
         List<Availability> specialAvailabilities = availabilityService.getAvailabilityForDoctorWithDate(doctorId);
 
         ArrayList<DateTimeEntry> generalEntries = availableTimeOfDaysGeneral(generalAvailabilities, daysBetween, today);
         ArrayList<DateTimeEntry> specialEntries = availableTimeOfDaysSpecial(specialAvailabilities, daysBetween, today);
 
-        // 合并一般和特殊的可用时间段
         ArrayList<DateTimeEntry> finalEntries = new ArrayList<>();
         for (DateTimeEntry generalEntry : generalEntries) {
             if (!specialEntries.contains(generalEntry)) {
@@ -128,11 +125,11 @@ public class PatientController {
             }
         }
 
-        // 对最终的可用时间段进行排序
+        
         finalEntries.sort(Comparator.comparing(DateTimeEntry::getDate)
                 .thenComparing(DateTimeEntry::getTime));
 
-        // 序列化 finalEntries 并添加到模型中
+        
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
@@ -213,35 +210,29 @@ public class PatientController {
             Model model
     ) {
         try {
-            // 解析日期和时间
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
             LocalDate appointmentDate = LocalDate.parse(date, dateFormatter);
             LocalTime appointmentTime = LocalTime.parse(time, timeFormatter);
 
-            // 从 Principal 中获取用户名
             String email = principal.getName();
 
-            // 根据用户名获取患者信息
             User patient = patientService.getPatientByEmail(email);
             System.out.println("Patient is : " + patient);
 
             if (patient == null) {
                 model.addAttribute("error", "未找到患者信息。");
-                return "errorPage"; // 替换为您的错误页面
+                return "errorPage"; 
             }
 
-            // 根据医生 ID 获取医生信息
             User doctor = doctorService.getDoctorById(Long.valueOf(doctorId));
             System.out.println("Doctor is : " + doctor);
 
             if (doctor == null) {
                 model.addAttribute("error", "未找到医生信息。");
-                return "errorPage"; // 替换为您的错误页面
+                return "errorPage"; 
             }
 
-
-            // 创建新的预约对象
             Appointment appointment = new Appointment();
             appointment.setDoctor(doctor);
             appointment.setPatient(patient);
@@ -250,7 +241,6 @@ public class PatientController {
             appointment.setEndTime(appointmentTime.plusHours(1));
             appointment.setStatus(Appointment.AppointmentStatus.SCHEDULED);
 
-            // 保存预约信息
             appointmentService.saveAppointment(appointment);
 
             Availability availability = new Availability();
@@ -261,24 +251,18 @@ public class PatientController {
             availability.setIsAvailable(false);
             availability.setDayOfWeek(appointmentDate.getDayOfWeek().getValue());
 
-            // 更新可预约表
             availabilityService.saveAvailability(availability);
 
-
-            // 添加成功消息到模型
             model.addAttribute("message", "您的预约已成功提交！");
 
-            // 返回预约确认页面
             return "redirect:/patients/viewappointments/" + patient.getId();
 
         } catch (DateTimeParseException e) {
-            // 日期或时间格式错误，返回错误信息
             model.addAttribute("error", "无效的日期或时间格式。");
-            return "patient-newappointment"; // 返回预约表单页面
+            return "patient-newappointment"; 
         } catch (Exception e) {
-            // 处理其他异常
             model.addAttribute("error", "预约过程中发生错误，请稍后重试。");
-            return "patient-newappointment"; // 返回预约表单页面
+            return "patient-newappointment"; 
         }
     }
 
@@ -296,7 +280,6 @@ public class PatientController {
             ArrayList<DateTimeEntry> generalEntries = availableTimeOfDaysGeneral(generalAvailabilities, daysBetween, today);
             ArrayList<DateTimeEntry> specialEntries = availableTimeOfDaysSpecial(specialAvailabilities, daysBetween, today);
 
-            // 合并一般和特殊的可用时间段
             ArrayList<DateTimeEntry> finalEntries = new ArrayList<>();
             for (DateTimeEntry generalEntry : generalEntries) {
                 if (!specialEntries.contains(generalEntry)) {
@@ -309,14 +292,12 @@ public class PatientController {
                 }
             }
 
-            // 对最终的可用时间段进行排序
             finalEntries.sort(Comparator.comparing(DateTimeEntry::getDate)
                     .thenComparing(DateTimeEntry::getTime));
 
-            // 序列化 finalEntries 并返回
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule()); // 处理 Java 8 日期和时间类型
-            objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // 禁用时间戳
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); 
 
             String availabilitiesForDoctorJson = objectMapper.writeValueAsString(finalEntries);
             return ResponseEntity.ok(availabilitiesForDoctorJson);
