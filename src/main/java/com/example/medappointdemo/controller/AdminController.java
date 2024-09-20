@@ -255,43 +255,39 @@ public class AdminController {
     }
 
     @PostMapping("/doctor-registration")
-    public String processRegister(@Valid User user, BindingResult result,RedirectAttributes redirectAttributes, Model model) {
-        if (result.hasErrors()) {
-            log.debug(String.valueOf(result));
-            return "admin-doctor-form";
-        }
+    public String processRegister(@ModelAttribute("newDoctor") User newDoctor, BindingResult result,RedirectAttributes redirectAttributes, Model model) {
 
-        if (!user.getPassword().equals(user.getPassword2())) {
+        if (!newDoctor.getPassword().equals(newDoctor.getPassword2())) {
             result.rejectValue("password2", "passwordsDoNotMatch", "Passwords must match");
             return "admin-doctor-form";
         }
 
-        Optional<User> doctorByFirstNameAndLastName = adminService.getDoctorByFirstNameAndLastName(user.getFirstName(), user.getLastName());
+        Optional<User> doctorByFirstNameAndLastName = adminService.getDoctorByFirstNameAndLastName(newDoctor.getFirstName(), newDoctor.getLastName());
         if(doctorByFirstNameAndLastName.isPresent()){
             result.rejectValue("firstName", "usernameExists", "Username already exists");
             return "admin-doctor-form";
         }
 
-        Optional<User> doctorByEmail = doctorService.getDoctorByEmail(user.getEmail());
+        Optional<User> doctorByEmail = doctorService.getDoctorByEmail(newDoctor.getEmail());
         if (doctorByEmail.isPresent()) {
             result.rejectValue("email", "emailExists", "Email already exists");
             return "admin-doctor-form";
         }
 
-        if(user.getRole() == null){
+        if(newDoctor.getRole() == null){
 //            user.setRole(Role.PATIENT);
-            user.setRole(Role.DOCTOR);
+            newDoctor.setRole(Role.DOCTOR);
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(newDoctor.getPassword());
+        newDoctor.setPassword(encodedPassword);
 
-        user.setActive(true);
+        newDoctor.setActive(true);
 
-        userRepository.save(user);
+        userRepository.save(newDoctor);
         redirectAttributes.addFlashAttribute("message", "Information updated successfully!");
-        return "redirect:/doctor-registration";
+        return "redirect:/admins/doctor-registration";
 
     }
 
