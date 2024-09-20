@@ -86,8 +86,8 @@
                 return;
             }
 
-            // Check file size (2MB limit)
-            var maxSize = 5 * 1024 * 1024; // 2MB in bytes
+            // Check file size (5MB limit)
+            var maxSize = 5 * 1024 * 1024; // 5MB in bytes
             if (file.size > maxSize) {
                 alert('File size must not exceed 5MB.');
                 return;
@@ -95,7 +95,7 @@
 
 
             $.ajax({
-                url: '/uploadAvatar', // Your backend endpoint
+                url: '/uploadAvatar',
                 type: 'POST',
                 data: formData,
                 contentType: false,
