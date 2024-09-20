@@ -7,7 +7,8 @@
 
 
 </head>
-<body class="d-flex align-items-center justify-content-center">
+<body>
+<div th:replace="fragments/logged-header :: header"></div>
 <div class="container-sm">
     <h1>Patient-appointments List</h1>
     <!--  <div th:if="${#authorization.expression('isAuthenticated() and !hasAuthority(''ROLE_ANONYMOUS'')')}">-->
