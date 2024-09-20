@@ -24,22 +24,24 @@
         <th>ID</th>
         <th>Doctor</th>
         <th>Date</th>
-
+        <th>StartTime</th>
+        <th>EndTime</th>
+        <th>Status</th>
       </tr>
       </thead>
-      <tbody>
 
+      <tbody>
       <tr th:each="appointment : ${appointments}">
         <td th:text="${appointment.id}">ID</td>
-        <td th:text="${appointment.doctor}">Doctor</td>
+        <td th:text="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}">Doctor</td>
         <td th:text="${appointment.appointmentDate}">Date</td>
+        <td th:text="${appointment.startTime}">Date</td>
+        <td th:text="${appointment.endTime}">Date</td>
+        <td th:text="${appointment.status}">Date</td>
       </tr>
       </tbody>
     </table>
   </div>
-
-
-
 </div>
 
 </body>
