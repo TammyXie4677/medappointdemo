@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin-availabilities</title>
+    <title>Admin Availabilities Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-
 </head>
+
 <body>
 <div th:replace="fragments/logged-header :: header"></div>
 <div class="container my-5">
@@ -17,7 +16,7 @@
     <!--  <div th:if="${#authorization.expression('isAuthenticated() and !hasAuthority(''ROLE_ANONYMOUS'')')}">-->
     <div>
         <!--    <h3>Welcome, <span th:text="${#authentication.name}"></span></h3>-->
-        <h3>Welcome, admin : <span th:text="${adminUser.firstName + ' ' + adminUser.lastName}"/></h3>
+        <h3>Welcome, Admin user: <span th:text="${user.lastName}"/></h3>
 
         <div><p>There are <span th:text="${#lists.size(doctors)}"></span> doctor(s) in the system.</p>
 
@@ -58,7 +57,7 @@
                             <td th:text="${availability.isAvailable}">Available</td>
                             <td>
                                 <a th:href="@{/admins/availabilities/deletegeneral/{id}(id=${availability.id})}"
-                                class="btn btn-danger">
+                                   class="btn btn-danger">
                                     Delete
                                 </a>
                             </td>
@@ -131,12 +130,12 @@
         </div>
     </div>
 
-        <div>
-            <a href="/admins/availabilities/newspecific">Create new specific availability</a>
-        </div>
-
-
+    <div>
+        <a href="/admins/availabilities/newspecific">Create new specific availability</a>
     </div>
+
+
+</div>
 </div>
 
 </body>
