@@ -56,7 +56,7 @@ public class PatientController {
         model.addAttribute("patient", user);
 
         String photo = user.getPhoto();
-        if(photo.isEmpty() || photo == null) {
+        if(photo == null || photo.isEmpty() ) {
             photo = "";
         }
         model.addAttribute("imgUrl", photo);
