@@ -57,7 +57,7 @@ public class PatientController {
 
         String photo = user.getPhoto();
         if(photo.isEmpty() || photo == null) {
-            photo = "/public/avatar.png";
+            photo = "";
         }
         model.addAttribute("imgUrl", photo);
 
