@@ -59,11 +59,11 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                 .findFirst()
                 .map(role -> {
                     if (role.equals("ROLE_ADMIN")) {
-                        return "/admins";
+                        return "/admins/";
                     } else if (role.equals("ROLE_DOCTOR")) {
-                        return "/doctors";
+                        return "/doctors/";
                     } else if (role.equals("ROLE_PATIENT")) {
-                        return "/patients";
+                        return "/patients/";
                     }
                     return "/home";
                 })
