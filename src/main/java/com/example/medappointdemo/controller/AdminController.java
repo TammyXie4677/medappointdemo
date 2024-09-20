@@ -55,18 +55,17 @@ public class AdminController {
         String photo = "";
         model.addAttribute("imgUrl", photo);
 
-
-
-        String vie = "/patients/viewappointments/";
-        String makeAppLinke = "/appointment";
         String patientId = user.getId().toString();
+
         String viewStatisticsLink = "/admins/statistics";
+        String doctorRegistrationLink = "/admins/doctor-registration";
         String viewEmailLink = "/admins/emails";
         String viewAvailabilityLink = "/admins/availabilities";
         String viewAppoinetmentsLink = "/admins/appointments";
 //        String adminId = user.getId().toString();
         Map<String, String> controllerLinks = new LinkedHashMap<>();
         controllerLinks.put("Statistics", viewStatisticsLink);
+        controllerLinks.put("Doctor Registration", doctorRegistrationLink);
         controllerLinks.put("Email settings", viewEmailLink);
         controllerLinks.put("view Availabilities", viewAvailabilityLink);
         controllerLinks.put("view Appointments", viewAppoinetmentsLink);
