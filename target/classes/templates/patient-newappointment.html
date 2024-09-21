@@ -31,7 +31,7 @@
                 <label for="doctorId">Choose a Doctor:</label>
                 <select id="doctorId" name="doctorId" class="form-control" required>
                     <option value="" disabled selected>Select a doctor</option>
-                    <!-- 遍历 doctors 列表 -->
+                    <!-- go though the doctor list -->
                     <option th:each="doctor : ${doctors}"
                             th:value="${doctor.id}"
                             th:data-specialization="${doctor.specialization}"

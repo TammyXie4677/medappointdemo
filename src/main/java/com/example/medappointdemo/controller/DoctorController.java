@@ -55,10 +55,12 @@ public class DoctorController {
             String afterAppLink = "/doctors/afterAppointment";
             String applyCancelAppLink = "/doctors/applyCancelAppointment";
             String applyAvailabilityLink = "/doctors/applyAvailability";
+            String viewStatisticsLink = "/doctors/statistics";
 
             Map<String, String> controllerLinks = new LinkedHashMap<>();
             controllerLinks.put("View my appointment(s)", viewAppsLink);
             controllerLinks.put("Handler After appointment", afterAppLink);
+            controllerLinks.put("my Statistics", applyCancelAppLink);
             model.addAttribute("controllerLinks", controllerLinks);
         }
     }
