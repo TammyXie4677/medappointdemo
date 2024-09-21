@@ -2,13 +2,10 @@ package com.example.medappointdemo.controller;
 
 
 import com.amazonaws.HttpMethod;
-import com.example.medappointdemo.model.Role;
+import com.example.medappointdemo.model.*;
 import com.example.medappointdemo.repository.DoctorRepository;
 import com.example.medappointdemo.repository.UserRepository;
 import com.example.medappointdemo.service.AdminService;
-import com.example.medappointdemo.model.Appointment;
-import com.example.medappointdemo.model.Availability;
-import com.example.medappointdemo.model.User;
 import com.example.medappointdemo.service.AvailabilityService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -116,9 +113,32 @@ public class AdminController {
         return null;
     }
 
+    public List<List<Object>> getAppointmentsByDoctor(List<Appointment> appointments ){
+
+        Map<String,Integer> doctorAppointmentCount = new HashMap<>();
+        for(Appointment appointment : appointments){
+            String doctorName = appointment.getDoctor().getFirstName() + " " + appointment.getDoctor().getLastName();
+            doctorAppointmentCount.put(doctorName, doctorAppointmentCount.getOrDefault(doctorName, 0) + 1);
+        }
+        List<List<Object>> appointmentList = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : doctorAppointmentCount.entrySet()) {
+            List<Object> doctorData = new ArrayList<>();
+            doctorData.add(entry.getKey());
+            doctorData.add(entry.getValue());
+            appointmentList.add(doctorData);
+        }
+        return appointmentList;
+    }
+
     @GetMapping("/statistics/doctors")
     public String viewDoctors(Model model){
-        return null;
+        List<Appointment> appointments = adminService.getAppointments();
+        if(!appointments.isEmpty()) {
+            List<List<Object>> getAppointmentsByDoctor = getAppointmentsByDoctor(appointments);
+            model.addAttribute("getAppointmentsByDoctor", getAppointmentsByDoctor);
+        }
+
+        return "admin-statistics-by-doctors";
     }
 
     @GetMapping("/statistics/patients")
