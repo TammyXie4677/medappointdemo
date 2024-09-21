@@ -48,6 +48,10 @@ public class DoctorService {
         return doctorRepository.findAllDoctors();
     }
 
+    public Appointment getAppointmentForDoctor(Long id) {
+        return appointmentRepository.findAppointmentById(id);
+    }
+
 
 
 

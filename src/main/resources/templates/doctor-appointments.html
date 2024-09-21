@@ -36,10 +36,10 @@
         <td th:text="${appointment.id}">ID</td>
         <td th:text="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}">Doctor</td>
         <td th:text="${appointment.appointmentDate}">Date</td>
-        <td th:text="${appointment.startTime}">Date</td>
-        <td th:text="${appointment.endTime}">Date</td>
-        <td th:text="${appointment.status}">Date</td>
-        <td><a th:href="@{/doctors/editAppointment/${appointment.id}}">Edit</a></td>
+        <td th:text="${appointment.startTime}">StartTime</td>
+        <td th:text="${appointment.endTime}">EndTime</td>
+        <td th:text="${appointment.status}">Status</td>
+        <td><a th:href="@{/doctors/editAppointment/${appointment.id}}" class="btn btn-success">Handle</a></td>
       </tr>
       </tbody>
     </table>

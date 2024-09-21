@@ -23,4 +23,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     long countByPatient_Id(Long id);
 
     long countByPatient_Email(String email);
+
+    Appointment findAppointmentById(Long id);
 }
