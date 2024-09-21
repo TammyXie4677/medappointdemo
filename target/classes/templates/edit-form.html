@@ -59,7 +59,7 @@
     <!-- Separate form for file upload -->
     <div class="form-group mt-5 mb-3">
         <div>
-            <img th:src="@{${imgUrl}}" alt="imgurl">
+            <img th:src="@{imgUrl}" alt="imgurl" style="max-width: 300px; max-height: 200px; width: auto; height: auto;">
         </div>
         <form id="uploadForm" th:action="@{/uploadAvatar}" enctype="multipart/form-data">
             <label for="imgUrl">Photo</label>
