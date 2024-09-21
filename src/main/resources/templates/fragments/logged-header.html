@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary" th:fragment="header" style="box-shadow: 0 2px 4px rgba(0,0,0,.1);">
+<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;" th:fragment="header">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="/home" style="font-size: 1.5rem;">#MedAppoint</a>
+        <a class="navbar-brand" href="/home">Clinic</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -10,35 +10,30 @@
             <div th:if="${controllerLinks}">
                 <div th:if="${imgUrl != '/pubic/avatar.png'}" class="navbar-nav">
                     <div th:each="link : ${controllerLinks}">
-                        <a class="nav-link text-light hover-effect" th:href="@{${link.value}}" th:text="${link.key}" style="margin-right: 15px;"></a>
+                        <a class="nav-link" th:href="@{${link.value}}" th:text="${link.key}"></a>
                     </div>
                 </div>
 
-                <div th:unless="${imgUrl != '/pubic/avatar.png'}" class="navbar-nav">
-                    <a class="nav-link text-light hover-effect" th:href="${defaultLinks.get(1)}" th:text="${defaultLinks.get(0)}" style="margin-right: 15px;"></a>
+                <div th:unless="${imgUrl != '/pubic/avatar.png'}"> class="navbar-nav">
+                        <a class="nav-link" th:href="${defaultLinks.get(1)}" th:text="${defaultLinks.get(0)}"></a>
                 </div>
             </div>
 
             <!-- 如果 controllerLinks 不存在 -->
             <div th:unless="${controllerLinks}" class="navbar-nav">
-                <a class="nav-link active text-light hover-effect" aria-current="page" href="/home" style="margin-right: 15px;">Home</a>
-                <a class="nav-link text-light hover-effect" href="/features" style="margin-right: 15px;">Features</a>
+                <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                <a class="nav-link" href="/features">Features</a>
             </div>
+
 
             <!-- 右侧的 Logout 和 Avatar -->
             <div th:if="${imgUrl}" class="ms-auto d-flex align-items-center">
-                <a href="/edit" style="margin-right: 15px;">
-                    <img th:src="${imgUrl}" alt="Avatar" class="rounded-circle border border-light" style="width: 40px; height: 40px; object-fit: cover;">
+                <a href="/edit">
+                <img th:src="${imgUrl}" alt="Avatar" class="rounded-circle" style="width: 36px; height: 36px;">
                 </a>
-                <a href="/logout" class="btn btn-outline-light">Logout</a>
+                <a href="/logout" class="btn btn-outline-danger ms-3">Logout</a>
             </div>
         </div>
     </div>
 </nav>
 
-<style>
-    .hover-effect:hover {
-        color: #f8f9fa !important;
-        text-decoration: underline;
-    }
-</style>
