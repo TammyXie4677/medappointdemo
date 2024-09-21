@@ -6,7 +6,7 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script th:inline="javascript">
-        var doctorAppointments = /*[[%{doctorAppointments}]]*/ [];
+        var doctorAppointments = /*[[${doctorAppointments}]]*/ [];
         console.log(doctorAppointments);
 
         google.charts.load('current', {'packages': ['corechart']});
