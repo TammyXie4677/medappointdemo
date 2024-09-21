@@ -113,7 +113,7 @@ public class AdminController {
         return null;
     }
 
-    public List<List<Object>> getAppointmentsByMonth(List<Appointment> appointments) {
+    public List<List<Object>> getAppointmentsByDate(List<Appointment> appointments) {
         Map<LocalDate, Integer> doctorAppointmentsCount = new HashMap<>();
         for (Appointment appointment : appointments) {
             LocalDate appointmentDate = appointment.getAppointmentDate();
@@ -162,7 +162,7 @@ public class AdminController {
     public String viewByPatients(Model model){
         List<Appointment> appointments = adminService.getAppointments();
         if(!appointments.isEmpty()) {
-            List<List<Object>> getAppointmentsByDoctor = getAppointmentsByDoctor(appointments);
+            List<List<Object>> getAppointmentsByDoctor = getAppointmentsByDate(appointments);
             model.addAttribute("getAppointmentsByDoctor", getAppointmentsByDoctor);
         }
 
