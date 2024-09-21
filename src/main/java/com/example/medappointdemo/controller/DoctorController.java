@@ -91,18 +91,16 @@ public class DoctorController {
 
 
     @PostMapping("/editappointment/{id}")
-    public String updateDoctorAppointment(
-            @PathVariable Long id,
-            @Valid Appointment appointment,
-            BindingResult result,
-            RedirectAttributes redirectAttributes,
-            Model model) {
+    public String updateDoctorAppointment(@PathVariable Long id,@Valid Appointment appointment,BindingResult result,RedirectAttributes redirectAttributes,Model model) {
+        Appointment existingAppointment = appointmentRepository.findById(id).orElse(null);
+        if (existingAppointment == null) {
+            redirectAttributes.addFlashAttribute("error", "Appointment not found");
+            return "redirect:/error-page";
+        }
 
-        // 处理验证错误
         if (result.hasErrors()) {
-            // 将验证错误信息加入 model 或 RedirectAttributes
             redirectAttributes.addFlashAttribute("error", "Validation failed. Please correct the errors and try again.");
-            return "redirect:/doctors/editappointment/{id}"; // 重定向到编辑页面
+            return "redirect:/doctors/editappointment/{id}";
         }
 
         if (!appointment.getId().equals(id)) {
@@ -110,10 +108,8 @@ public class DoctorController {
             return "redirect:/error-page";
         }
 
-        // 执行保存操作
         appointmentRepository.save(appointment);
         redirectAttributes.addFlashAttribute("success", "Appointment updated successfully");
-
         return "redirect:/doctors/appointments";
     }
 
