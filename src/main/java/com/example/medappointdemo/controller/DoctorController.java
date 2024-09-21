@@ -91,24 +91,26 @@ public class DoctorController {
 
 
     @PostMapping("/editappointment/{id}")
-    public String updateDoctorAppointment(@PathVariable Long id,@Valid Appointment appointment,BindingResult result,RedirectAttributes redirectAttributes,Model model) {
-        Appointment existingAppointment = appointmentRepository.findById(id).orElse(null);
-        if (existingAppointment == null) {
-            redirectAttributes.addFlashAttribute("error", "Appointment not found");
-            return "redirect:/error-page";
-        }
+    public String updateDoctorAppointment(@PathVariable("id") Long id,@Valid Appointment appointment,BindingResult result,RedirectAttributes redirectAttributes,Model model) {
 
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Validation failed. Please correct the errors and try again.");
             return "redirect:/doctors/editappointment/{id}";
         }
 
-        if (!appointment.getId().equals(id)) {
-            redirectAttributes.addFlashAttribute("error", "Appointment ID mismatch");
+        if (!appointment.getStatus().equals(Appointment.AppointmentStatus.COMPLETED) &&
+                !appointment.getStatus().equals(Appointment.AppointmentStatus.SCHEDULED)) {
+            redirectAttributes.addFlashAttribute("error", "Invalid status value");
+            return "redirect:/error-page";
+        }
+        Appointment existingAppointment = appointmentRepository.findById(id).orElse(null);
+        if (existingAppointment == null) {
+            redirectAttributes.addFlashAttribute("error", "Appointment not found");
             return "redirect:/error-page";
         }
 
-        appointmentRepository.save(appointment);
+        existingAppointment.setStatus(appointment.getStatus());
+        appointmentRepository.save(existingAppointment);
         redirectAttributes.addFlashAttribute("success", "Appointment updated successfully");
         return "redirect:/doctors/appointments";
     }
