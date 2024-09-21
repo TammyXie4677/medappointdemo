@@ -59,12 +59,16 @@
 
       <div class="form-group mb-3">
         <label for="status">Status</label>
-        <input id="status" class="form-control" type="text" th:field="*{status}">
+        <select id="status" class="form-control" aria-label="Status" th:field="*{status}" required>
+          <option value="SCHEDULED" selected>Select the status</option>
+          <option value="COMPLETED">COMPLETED</option>
+        </select>
+
         <div class="alert alert-warning" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
       </div>
 
       <div class="form-group mb-3">
-        <label for="reasonForVisit">Status</label>
+        <label for="reasonForVisit">Reason For Visit</label>
         <input id="reasonForVisit" class="form-control" type="text" th:field="*{reasonForVisit}" readonly>
         <div class="alert alert-warning" th:if="${#fields.hasErrors('reasonForVisit')}" th:errors="*{reasonForVisit}"></div>
       </div>
