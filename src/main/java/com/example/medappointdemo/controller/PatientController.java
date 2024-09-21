@@ -226,7 +226,7 @@ public class PatientController {
             System.out.println("Patient is : " + patient);
 
             if (patient == null) {
-                model.addAttribute("error", "Can not find the patient");
+                model.addAttribute("error", "未找到患者信息。");
                 return "errorPage"; 
             }
 
@@ -234,7 +234,7 @@ public class PatientController {
             System.out.println("Doctor is : " + doctor);
 
             if (doctor == null) {
-                model.addAttribute("error", "Can not find the doctor");
+                model.addAttribute("error", "未找到医生信息。");
                 return "errorPage"; 
             }
 
@@ -258,15 +258,15 @@ public class PatientController {
 
             availabilityService.saveAvailability(availability);
 
-            model.addAttribute("message", "Appointment submitted successfully！");
+            model.addAttribute("message", "您的预约已成功提交！");
 
             return "redirect:/patients/viewappointments/" + patient.getId();
 
         } catch (DateTimeParseException e) {
-            model.addAttribute("error", "Invalid date format or time format");
+            model.addAttribute("error", "无效的日期或时间格式。");
             return "patient-newappointment"; 
         } catch (Exception e) {
-            model.addAttribute("error", "Something went wrong, please try again later");
+            model.addAttribute("error", "预约过程中发生错误，请稍后重试。");
             return "patient-newappointment"; 
         }
     }

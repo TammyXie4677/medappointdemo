@@ -47,10 +47,10 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         request.getSession().setAttribute("lastName", user.getLastName());
 
         String continueUrl = request.getParameter("continue");
-//        if (continueUrl != null && !continueUrl.isEmpty()) {
-//            // Redirect to the continue URL if present
-//            setDefaultTargetUrl(continueUrl);
-        if (authentication.getAuthorities().stream()
+        if (continueUrl != null && !continueUrl.isEmpty()) {
+            // Redirect to the continue URL if present
+            setDefaultTargetUrl(continueUrl);
+        } else if (authentication.getAuthorities().stream()
             .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
             setDefaultTargetUrl("/admins/");
         } else if (authentication.getAuthorities().stream()
@@ -62,8 +62,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         } else {
             setDefaultTargetUrl("/home");
         }
-        //force to redirect
-        clearAuthenticationAttributes(request);
+
         super.onAuthenticationSuccess(request, response, authentication);
     }
 
