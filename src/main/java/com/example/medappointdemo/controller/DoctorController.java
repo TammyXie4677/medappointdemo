@@ -4,6 +4,7 @@ import com.amazonaws.HttpMethod;
 import com.example.medappointdemo.model.Appointment;
 
 import com.example.medappointdemo.model.User;
+import com.example.medappointdemo.repository.AppointmentRepository;
 import com.example.medappointdemo.service.DoctorService;
 
 import com.example.medappointdemo.service.S3Service;
@@ -33,6 +34,8 @@ public class DoctorController {
 
     @Autowired
     private S3Service s3Service;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @ModelAttribute
     public void addCommonAttributes(Principal principal,Model model) {
@@ -85,6 +88,35 @@ public class DoctorController {
         model.addAttribute("appointment", appointment);
         return "doctor-appointment-form";
     }
+
+
+    @PostMapping("/editappointment/{id}")
+    public String updateDoctorAppointment(
+            @PathVariable Long id,
+            @Valid Appointment appointment,
+            BindingResult result,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        // 处理验证错误
+        if (result.hasErrors()) {
+            // 将验证错误信息加入 model 或 RedirectAttributes
+            redirectAttributes.addFlashAttribute("error", "Validation failed. Please correct the errors and try again.");
+            return "redirect:/doctors/editappointment/{id}"; // 重定向到编辑页面
+        }
+
+        if (!appointment.getId().equals(id)) {
+            redirectAttributes.addFlashAttribute("error", "Appointment ID mismatch");
+            return "redirect:/error-page";
+        }
+
+        // 执行保存操作
+        appointmentRepository.save(appointment);
+        redirectAttributes.addFlashAttribute("success", "Appointment updated successfully");
+
+        return "redirect:/doctors/appointments";
+    }
+
 
     @GetMapping({"/", "/index", "/?continue",""})
     public String viewDoctorHomepage(Principal principal, Model model){
