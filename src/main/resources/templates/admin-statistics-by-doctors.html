@@ -6,8 +6,8 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script th:inline="javascript">
-        var doctorAppointments = /*[[${doctorAppointments}]]*/ [];
-        console.log(doctorAppointments);
+        var doctorAppointmentsJS = /*[[${doctorAppointments}]]*/ [];
+        console.log(doctorAppointmentsJS);
 
         google.charts.load('current', {'packages': ['corechart']});
 
@@ -20,8 +20,8 @@
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Topping');
             data.addColumn('number', 'Appointments');
-            doctorAppointments.forEach(function (appointment){
-                data.addRows([appointment[0],appointment[1]]);
+            doctorAppointmentsJS.forEach(function(appointment){
+                data.addRow([appointment[0],appointment[1]]);
             });
 
 
