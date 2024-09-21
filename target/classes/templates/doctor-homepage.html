@@ -12,10 +12,18 @@
   <h1>Doctor Homepage</h1>
 <!--  <div th:if="${#authorization.expression('isAuthenticated() and !hasAuthority(''ROLE_ANONYMOUS'')')}">-->
   <div>
+      <div class="hero-unit">
+          <h3>Welcome, Dr. <span th:text="${doctor.lastName}" /></h3>
+          <div>
+              <p>
+                  To manage the clinic, click the links on the navigation bar.
+              </p>
+          </div>
 
+          <div>
+          </div>
+      </div>
 
-<!--    <h3>Welcome, <span th:text="${#authentication.name}"></span></h3>-->
-    <h3>Welcome, Dr. <span th:text="${doctor.lastName}" /></h3>
 
 
     <div>
@@ -33,27 +41,7 @@
     <div>
       <a href="#">Statistics</a>
     </div>
-<!--    <table class="table table-striped">-->
-<!--      <thead>-->
-<!--      <tr>-->
-<!--        <th>ID</th>-->
-<!--        <th>Doctor</th>-->
-<!--        <th>Date</th>-->
-
-<!--      </tr>-->
-<!--      </thead>-->
-<!--      <tbody>-->
-
-<!--      <tr th:each="appointment : ${appointments}">-->
-<!--        <td th:text="${appointment.id}">ID</td>-->
-<!--        <td th:text="${appointment.doctor}">Doctor</td>-->
-<!--        <td th:text="${appointment.appointmentDate}">Date</td>-->
-<!--      </tr>-->
-<!--      </tbody>-->
-<!--    </table>-->
   </div>
-
-
 
 </div>
 

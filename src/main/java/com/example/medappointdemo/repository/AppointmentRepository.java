@@ -9,10 +9,16 @@ import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     @Query("SELECT a FROM Appointment a WHERE a.doctor.id= :id")
+    List<Appointment> findAppointmentsByDoctor_Email(@Param("mail") String mail);
+
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.id= :id")
     List<Appointment> findAppointmentsByDoctor_Id(@Param("id") Long id);
 
     @Query("SELECT a FROM Appointment a WHERE a.patient.id= :id")
     List<Appointment> findByPatientId(@Param("id") Long id);
+
+    @Query("SELECT a FROM Appointment a WHERE a.patient.email = :email")
+    List<Appointment> findByPatientEmail(@Param("email") String email);
 
     long countByPatient_Id(Long id);
 
