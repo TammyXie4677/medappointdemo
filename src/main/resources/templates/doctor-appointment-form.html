@@ -21,9 +21,9 @@
     <h3>Welcome, Dr. <span th:text="${user.lastName}" /></h3>
 
 
-    <form th:action="@{/doctors/editappointment}" th:object="${appointment}" method="post" class="form col-3 mx-auto">
+    <form th:action="@{/doctors/editappointment/{id}(id=${appointment.id})}" th:object="${appointment}" method="post" class="form col-3 mx-auto">
       <h2 class="text-center mb-3">Doctor Appointment Edit</h2>
-
+      <input type="hidden" th:field="*{id}" />
       <div class="form-group mb-3">
         <label for="id">Appointment ID</label>
         <input id="id" class="form-control" type="text" th:field="*{id}" readonly>
@@ -63,7 +63,7 @@
       <div class="form-group mb-3">
         <label for="status">Status</label>
         <select id="status" class="form-control" aria-label="Status" th:field="*{status}" required>
-          <option value="" selected>Select the status</option>
+          <option value="" disabled selected>Select the status</option>
           <option value="COMPLETED">COMPLETED</option>
           <option value="SCHEDULED">SCHEDULED</option>
         </select>
