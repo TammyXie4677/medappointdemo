@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    @Query("SELECT a FROM Appointment a WHERE a.doctor.id= :email")
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.email= :email")
     List<Appointment> findAppointmentsByDoctor_Email(@Param("email") String email);
 
     @Query("SELECT a FROM Appointment a WHERE a.doctor.id= :id")

@@ -48,7 +48,7 @@ public class DoctorController {
                 System.out.println(resignedUrl);
                 model.addAttribute("imgUrl", resignedUrl);
             } else {
-                model.addAttribute("imgUrl", "");  //considering a default avatar for all doctors
+                model.addAttribute("imgUrl", " ");  //considering a default avatar for all doctors
             }
 
             String viewAppsLink = "/doctors/appointments";
