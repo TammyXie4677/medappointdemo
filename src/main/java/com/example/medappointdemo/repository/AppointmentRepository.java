@@ -25,4 +25,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     long countByPatient_Email(String email);
 
     Appointment findAppointmentById(Long id);
+
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.email= :email AND a.status='COMPLETED'")
+    List<Appointment> findCompletedAppointment_Email(@Param("email") String email);
 }

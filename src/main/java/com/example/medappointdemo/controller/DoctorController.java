@@ -55,7 +55,7 @@ public class DoctorController {
             }
 
             String viewAppsLink = "/doctors/appointments";
-            String afterAppLink = "/doctors/afterAppointment";
+            String afterAppLink = "/doctors/afterappointment";
             String applyCancelAppLink = "/doctors/applyCancelAppointment";
             String applyAvailabilityLink = "/doctors/applyAvailability";
             String viewStatisticsLink = "/doctors/statistics";
@@ -113,6 +113,14 @@ public class DoctorController {
         appointmentRepository.save(existingAppointment);
         redirectAttributes.addFlashAttribute("success", "Appointment updated successfully");
         return "redirect:/doctors/appointments";
+    }
+
+    @GetMapping("/afterappointment")
+    public String viewDoctorAfterAppointment(Principal principal, Model model) {
+        String email = principal.getName();
+        List<Appointment> appointments = doctorService.getCompletedAppointmentsForDoctorByEmail(email);
+        model.addAttribute("appointments", appointments);
+        return "doctor-after-appointments";
     }
 
 
