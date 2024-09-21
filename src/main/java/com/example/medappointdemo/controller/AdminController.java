@@ -126,6 +126,7 @@ public class AdminController {
             doctorData.add(entry.getValue());
             appointmentList.add(doctorData);
         }
+        appointmentList.sort(Comparator.comparing(o -> o.get(0).toString()));
         return appointmentList;
     }
 
