@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Doctor Registration Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+<div th:replace="fragments/logged-header :: header"></div>
+<div th:if="${message}" class="alert alert-success" role="alert">
+    <p th:text="${message}"></p>
+</div>
+<h1>Admin-doctor Registration</h1>
+<div class="container my-5">
+
+    <div>
+        <p>Doctors List</p>
+    </div>
+
+    <div>
+        <table th:if="${doctors}" class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Gender</th>
+                <th>Specialization</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="doctor: ${doctors}">
+                <td th:text="${doctor.id}">ID</td>
+                <td th:text="${doctor.firstName}">First Name</td>
+                <td th:text="${doctor.lastName}">Last Name</td>
+                <td th:text="${doctor.gender}">Gender/td>
+                <td th:text="${doctor.specialization}">Specialization/td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <form th:action="@{/admins/doctor-registration}" th:object="${newDoctor}"
+          method="post" class="form col-3 mx-auto">
+        <h3 class="text-center mb-3">Doctor Registration Form</h3>
+        <input id="id" type="hidden" th:field="*{id}">
+
+        <div class="form-group mb-3">
+            <label for="firstName">First Name: </label>
+            <input id="firstName" class="form-control" type="text" th:field="*{firstName}" required>
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="lastName">Last Name: </label>
+            <input id="lastName" class="form-control" type="text" th:field="*{lastName}" required>
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="email">Email: </label>
+            <input id="email" class="form-control" type="email" th:field="*{email}" required>
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="password">Password: </label>
+            <input id="password" class="form-control" type="password" th:field="*{password}" required>
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="password2">Password (repeat): </label>
+            <input id="password2" class="form-control" type="password" th:field="*{password2}" required>
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}"></div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="phone">Phone Number </label>
+            <input id="phone" class="form-control" type="text" th:field="*{phone}">
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="gender">Gender</label>
+            <input id="gender" class="form-control" type="text" th:field="*{gender}" required>
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="specialization">Specialization</label>
+            <input id="specialization" class="form-control" type="text" th:field="*{specialization}" required>
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('specialization')}"
+                 th:errors="*{specialization}"></div>
+        </div>
+
+        <div class="d-flex justify-content-center mx-auto gap-3">
+            <button type="submit" class="btn btn-primary">Create a new doctor</button>
+            <a href="/admins/" class="btn btn-warning">Cancel</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

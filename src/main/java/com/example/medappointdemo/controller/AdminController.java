@@ -113,6 +113,22 @@ public class AdminController {
         return null;
     }
 
+    public List<List<Object>> getAppointmentsByMonth(List<Appointment> appointments) {
+        Map<LocalDate, Integer> doctorAppointmentsCount = new HashMap<>();
+        for (Appointment appointment : appointments) {
+            LocalDate appointmentDate = appointment.getAppointmentDate();
+            doctorAppointmentsCount.put(appointmentDate, doctorAppointmentsCount.getOrDefault(appointmentDate, 0) + 1);
+        }
+        List<List<Object>> appointmentList = new ArrayList<>();
+        for(Map.Entry<LocalDate, Integer> entry : doctorAppointmentsCount.entrySet()) {
+            List<Object> doctorData = new ArrayList<>();
+            doctorData.add(entry.getKey());
+            doctorData.add(entry.getValue());
+            appointmentList.add(doctorData);
+        }
+        return appointmentList;
+    }
+
     public List<List<Object>> getAppointmentsByDoctor(List<Appointment> appointments ){
 
         Map<String,Integer> doctorAppointmentCount = new HashMap<>();
@@ -131,7 +147,7 @@ public class AdminController {
     }
 
     @GetMapping("/statistics/doctors")
-    public String viewDoctors(Model model){
+    public String viewByDoctors(Model model){
         List<Appointment> appointments = adminService.getAppointments();
         if(!appointments.isEmpty()) {
             List<List<Object>> getAppointmentsByDoctor = getAppointmentsByDoctor(appointments);
@@ -141,10 +157,16 @@ public class AdminController {
         return "admin-statistics-by-doctors";
     }
 
-    @GetMapping("/statistics/patients")
+    @GetMapping("/statistics/dates")
 //    including charts
-    public String viewPatients(Model model){
-        return null;
+    public String viewByPatients(Model model){
+        List<Appointment> appointments = adminService.getAppointments();
+        if(!appointments.isEmpty()) {
+            List<List<Object>> getAppointmentsByDoctor = getAppointmentsByDoctor(appointments);
+            model.addAttribute("getAppointmentsByDoctor", getAppointmentsByDoctor);
+        }
+
+        return "admin-statistics-by-dates";
     }
 
     @GetMapping("/emails")
