@@ -35,20 +35,14 @@
       <tr th:each="appointment : ${appointments}">
         <td th:text="${appointment.id}">ID</td>
         <td th:text="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}">Doctor</td>
-        <td th:text="${#dates.format(appointment.appointmentDate, 'yyyy-MM-dd')}">Date</td>
-        <td th:text="${#dates.format(appointment.startTime, 'HH:mm')}">StartTime</td>
-        <td th:text="${#dates.format(appointment.endTime, 'HH:mm')}">EndTime</td>
-        <td th:switch="${appointment.status}">
-          <span th:case="'SCHEDULED'" class="badge bg-info">Scheduled</span>
-          <span th:case="'COMPLETED'" class="badge bg-success">Completed</span>
-          <span th:case="'CANCELLED'" class="badge bg-danger">Cancelled</span>
-          <span th:case="*">Unknown</span>
-        </td>
-        <td>
-          <a th:href="@{/doctors/editappointment/{id}(id=${appointment.id})}" class="btn btn-success">Handle</a>
-        </td>
+        <td th:text="${appointment.appointmentDate}">Date</td>
+        <td th:text="${appointment.startTime}">StartTime</td>
+        <td th:text="${appointment.endTime}">EndTime</td>
+        <td th:text="${appointment.status}">Status</td>
+        <td><a th:href="@{/doctors/editappointment/{id}(id=${appointment.id})}" class="btn btn-success">Handle</a></td>
       </tr>
       </tbody>
+    </table>
   </div>
 </div>
 
