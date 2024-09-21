@@ -7,53 +7,24 @@
 
 
 </head>
-<body class="d-flex align-items-center justify-content-center">
+<body>
+<div th:replace="fragments/logged-header :: header"></div>
 <div class="container-sm">
   <h1>Doctor Homepage</h1>
 <!--  <div th:if="${#authorization.expression('isAuthenticated() and !hasAuthority(''ROLE_ANONYMOUS'')')}">-->
   <div>
+      <div class="hero-unit">
+          <h3>Welcome, Dr. <span th:text="${user.lastName}" /></h3>
+          <div>
+              <p>
+                  To manage the appointments, click the links on the navigation bar.
+              </p>
+          </div>
 
-
-<!--    <h3>Welcome, <span th:text="${#authentication.name}"></span></h3>-->
-    <h3>Welcome, Dr. <span th:text="${doctor.lastName}" /></h3>
-
-
-    <div>
-      <a th:href="${toAppLink}">Check my appointments</a>
-    </div>
-
-    <div>
-      <a href="#">Apply to cancel an appointments</a>
-    </div>
-
-    <div>
-      <a href="#">Treatment after appointment</a>
-    </div>
-
-    <div>
-      <a href="#">Statistics</a>
-    </div>
-<!--    <table class="table table-striped">-->
-<!--      <thead>-->
-<!--      <tr>-->
-<!--        <th>ID</th>-->
-<!--        <th>Doctor</th>-->
-<!--        <th>Date</th>-->
-
-<!--      </tr>-->
-<!--      </thead>-->
-<!--      <tbody>-->
-
-<!--      <tr th:each="appointment : ${appointments}">-->
-<!--        <td th:text="${appointment.id}">ID</td>-->
-<!--        <td th:text="${appointment.doctor}">Doctor</td>-->
-<!--        <td th:text="${appointment.appointmentDate}">Date</td>-->
-<!--      </tr>-->
-<!--      </tbody>-->
-<!--    </table>-->
+          <div>
+          </div>
+      </div>
   </div>
-
-
 
 </div>
 

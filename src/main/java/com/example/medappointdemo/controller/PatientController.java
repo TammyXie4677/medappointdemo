@@ -66,11 +66,10 @@ public class PatientController {
         }
 
 
-        String viewAppsLink = "/patients/viewappointments/";
-        String makeAppLinke = "/appointment";
+        String viewAppsLink = "/patients/viewappointments";
+        String makeAppLinke = "/patients/newappointment";
         String patientId = user.getId().toString();
-        viewAppsLink = viewAppsLink + patientId;
-        makeAppLinke = "/patients/" + patientId + makeAppLinke;
+
         Map<String, String> controllerLinks = new LinkedHashMap<>();
         controllerLinks.put("View appointment(s)", viewAppsLink);
         controllerLinks.put("Make appointment", makeAppLinke);
@@ -91,15 +90,16 @@ public class PatientController {
     }
 
 
-    @GetMapping("/viewappointments/{id}")
-    public String viewPatientAppointments(@PathVariable Long id, Model model) {
-        List<Appointment> appointments = patientService.getAppointmentsForPatient(id);
+    @GetMapping("/viewappointments")
+    public String viewPatientAppointments(Principal principal, Model model) {
+        String email = principal.getName();
+        List<Appointment> appointments = patientService.getAppointmentsForPatientByEmail(email);
         model.addAttribute("appointments", appointments);
         return "patient-viewappointments";
     }
 
-    @GetMapping("/{id}/appointment")
-    public String viewAvailableAppoints(@PathVariable Long id, Model model) {
+    @GetMapping("/newappointment")
+    public String viewAvailableAppoints(Principal principal, Model model) {
         LocalDate today = LocalDate.now();
         LocalDate dueday = today.plusMonths(1);
         model.addAttribute("today", today.toString());

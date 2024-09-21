@@ -25,11 +25,18 @@ public class PatientService {
         return patientRepository.findPatientByUserId(id).orElse(null);
     }
 
-    public List<Appointment> getAppointmentsForPatient(Long id) {
+    public List<Appointment> getAppointmentsForPatientById(Long id) {
 
         List<Appointment> appointmentsForPatient = appointmentRepository.findByPatientId(id);
 
         return appointmentsForPatient;
+    }
+
+    public List<Appointment> getAppointmentsForPatientByEmail(String email) {
+
+        List<Appointment> appointmentsForPatientByEmail = appointmentRepository.findByPatientEmail(email);
+
+        return appointmentsForPatientByEmail;
     }
 
 

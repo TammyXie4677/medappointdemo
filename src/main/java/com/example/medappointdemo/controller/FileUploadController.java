@@ -65,7 +65,8 @@ public class FileUploadController {
 //            String imgUrl = "/uploads/" + newFileName;
 //            response.put("imgUrl", imgUrl);
 //            response.put("msg", "File uploaded successfully!");
-            response.put("imgUrl", amazonS3.getUrl(bucketName,newFileName).toString());
+            response.put("imgUrl", newFileName);
+//            response.put("imgUrl", amazonS3.getUrl(bucketName,newFileName).toString()); no! just the file name, not the full path and name.
             response.put("msg", "File uploaded successfully.");
 
             return ResponseEntity.ok(response);

@@ -37,8 +37,19 @@ public class DoctorService {
         return appointmentsForDoctor;
     }
 
+    public List<Appointment> getAppointmentsForDoctorByEmail(String email) {
+
+        List<Appointment> appointmentsForDoctorByEmail = appointmentRepository.findAppointmentsByDoctor_Email(email);
+
+        return appointmentsForDoctorByEmail;
+    }
+
     public List<User> getAllDoctors() {
         return doctorRepository.findAllDoctors();
+    }
+
+    public Appointment getAppointmentForDoctor(Long id) {
+        return appointmentRepository.findAppointmentById(id);
     }
 
 
