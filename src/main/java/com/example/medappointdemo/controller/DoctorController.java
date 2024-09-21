@@ -73,7 +73,7 @@ public class DoctorController {
         return "doctor-appointments";
     }
 
-    @GetMapping("/editAppointment/{id}")
+    @GetMapping("/editappointment/{id}")
     public String editDoctorAppointment(@PathVariable("id") Long id, BindingResult result, Principal principal, RedirectAttributes redirectAttributes, Model model) {
         Appointment appointment = doctorService.getAppointmentForDoctor(id);
         model.addAttribute("appointment", appointment);
