@@ -74,8 +74,14 @@ public class DoctorController {
     }
 
     @GetMapping("/editappointment/{id}")
-    public String editDoctorAppointment(@PathVariable("id") Long id, BindingResult result, Principal principal, RedirectAttributes redirectAttributes, Model model) {
+    public String editDoctorAppointment(@PathVariable("id") Long id, Principal principal, RedirectAttributes redirectAttributes, Model model) {
         Appointment appointment = doctorService.getAppointmentForDoctor(id);
+
+        if (appointment == null) {
+            redirectAttributes.addFlashAttribute("error", "Appointment not found");
+            return "redirect:/error-page";
+        }
+
         model.addAttribute("appointment", appointment);
         return "doctor-appointment-form";
     }
