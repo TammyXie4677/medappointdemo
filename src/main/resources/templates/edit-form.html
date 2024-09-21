@@ -7,7 +7,6 @@
 </head>
 <body>
 <div th:replace="fragments/logged-header :: header"></div>
-
 <div class="container my-5 d-flex align-items-center justify-content-center">
     <!-- Main form for user information -->
     <form th:action="@{/edit}" th:object="${user}" method="post" class="form col-3 mx-auto">

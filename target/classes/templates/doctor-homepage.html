@@ -7,13 +7,14 @@
 
 
 </head>
-<body class="d-flex align-items-center justify-content-center">
+<body>
+<div th:replace="fragments/logged-header :: header"></div>
 <div class="container-sm">
   <h1>Doctor Homepage</h1>
 <!--  <div th:if="${#authorization.expression('isAuthenticated() and !hasAuthority(''ROLE_ANONYMOUS'')')}">-->
   <div>
       <div class="hero-unit">
-          <h3>Welcome, Dr. <span th:text="${doctor.lastName}" /></h3>
+          <h3>Welcome, Dr. <span th:text="${user.lastName}" /></h3>
           <div>
               <p>
                   To manage the clinic, click the links on the navigation bar.
