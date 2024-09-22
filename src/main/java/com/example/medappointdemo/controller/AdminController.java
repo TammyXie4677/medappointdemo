@@ -7,6 +7,7 @@ import com.example.medappointdemo.repository.DoctorRepository;
 import com.example.medappointdemo.repository.UserRepository;
 import com.example.medappointdemo.service.AdminService;
 import com.example.medappointdemo.service.AvailabilityService;
+import com.example.medappointdemo.service.S3Service;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ public class AdminController {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    @Autowired
+    private S3Service s3Service;
+
     @ModelAttribute
     public void addCommonAttributes(Principal principal,Model model) {
 
@@ -49,7 +53,10 @@ public class AdminController {
         User user = userRepository.findByEmail(email);
         model.addAttribute("user", user);
 
-        String photo = "";
+        String photo = "Patient_1726973794.png";
+        String resignedUrl = s3Service.generateUrl(photo, HttpMethod.GET);
+        System.out.println(resignedUrl);
+        model.addAttribute("imgUrl", resignedUrl);
         model.addAttribute("imgUrl", photo);
 
         String patientId = user.getId().toString();

@@ -57,18 +57,17 @@ public class DoctorController {
     public void addCommonAttributes(Principal principal,Model model) {
 
         String email = principal.getName();
-        Optional<User> Doctor = doctorService.getDoctorByEmail(email);
-        if (Doctor.isPresent()) {
-            model.addAttribute("user", Doctor.get());
+        Optional<User> doctorOptional = doctorService.getDoctorByEmail(email);
+        if (doctorOptional.isPresent()) {
+            model.addAttribute("user", doctorOptional.get());
 
-            String photo = Doctor.get().getPhoto();
-            if (photo != null && !photo.isEmpty()) {
-                String resignedUrl = s3Service.generateUrl(photo, HttpMethod.GET);
-                System.out.println(resignedUrl);
-                model.addAttribute("imgUrl", resignedUrl);
-            } else {
-                model.addAttribute("imgUrl", " ");  //considering a default avatar for all doctors
+            String photo = doctorOptional.get().getPhoto();
+            if (photo == null || photo.isEmpty()) {
+                photo = "Patient_1726973794.png";
             }
+            String resignedUrl = s3Service.generateUrl(photo, HttpMethod.GET);
+            System.out.println(resignedUrl);
+            model.addAttribute("imgUrl", resignedUrl);
 
             String viewAppsLink = "/doctors/appointments";
             String afterAppLink = "/doctors/afterappointment";
