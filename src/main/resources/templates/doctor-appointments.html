@@ -34,11 +34,12 @@
 
       <tbody>
       <tr th:each="appointment : ${appointments}">
-        <td th:text="${appointment.id}">ID</td>
-        <td th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}">Patient</td>
-        <td th:text="${appointment.appointmentDate}">Date</td>
-        <td th:text="${appointment.startTime}">StartTime</td>
-        <td th:text="${appointment.endTime}">EndTime</td>
+        <td th:text="${appointment.id}"></td>
+        <td th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}"></td>
+        <td th:text="${appointment.appointmentDate}"></td>
+        <td th:text="${appointment.startTime}"></td>
+        <td th:text="${appointment.endTime}"></td>
+        <td th:text="${appointment.status}"></td>
         <!--for enum clas -->
         <td th:if="${appointment.status == T(com.example.medappointdemo.model.Appointment.AppointmentStatus).COMPLETED}"></td>
 
