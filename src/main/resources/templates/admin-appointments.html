@@ -29,12 +29,12 @@
 
                 <tbody>
                 <tr th:each="appointment : ${appointments}">
-                    <td th:text="${appointment.id}">ID</td>
-                    <td th:text="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}">Doctor</td>
-                    <td th:text="${#dates.format(appointment.appointmentDate, 'dd-MM-yyyy')}">Date</td>
-                    <td th:text="${#dates.format(appointment.startTime, 'HH:mm')}">Start Time</td>
-                    <td th:text="${#dates.format(appointment.endTime, 'HH:mm')}">End Time</td>
-                    <td th:text="${appointment.status}" th:class="${'status-' + appointment.status}">Status</td>
+                    <td th:text="${appointment.id}"></td>
+                    <td th:text="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}"></td>
+                    <td th:text="${#dates.format(appointment.appointmentDate, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${#dates.format(appointment.startTime, 'HH:mm')}"></td>
+                    <td th:text="${#dates.format(appointment.endTime, 'HH:mm')}"></td>
+                    <td th:text="${appointment.status}" th:class="${'status-' + appointment.status}"></td>
                 </tr>
                 </tbody>
             </table>

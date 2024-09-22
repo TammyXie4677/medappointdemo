@@ -8,7 +8,7 @@
 <body>
 <div th:replace="fragments/logged-header :: header"></div>
 <div class="container my-5">
-  <h1>Prescription For Appointments</h1>
+  <h2>Upload Prescription</h2>
   <h6>Welcome, Dr. <span th:text="${user.lastName}" /></h6>
 
   <table class="table table-striped">
@@ -21,7 +21,6 @@
       <th>End Time</th>
       <th>Status</th>
       <th>Actions</th>
-      <th>File</th>
     </tr>
     </thead>
     <tbody>
@@ -32,7 +31,6 @@
       <td th:text="${appointment.startTime}">Start Time</td>
       <td th:text="${appointment.endTime}">End Time</td>
       <td th:text="${appointment.status}">Status</td>
-      <td>File</td>
       <td>
         <a th:href="@{/doctors/uploadfile/{id}(id=${appointment.patient.id})}" class="btn btn-success">Upload a File</a>
       </td>
