@@ -153,12 +153,14 @@ public class DoctorController {
     }
 
     @PostMapping("/uploadFile/{id}")
-    public String uploadPatientFile(@PathVariable("id") Long id, MultipartFile file,RedirectAttributes redirectAttributes, Model model) {
+    public String uploadPatientFile(@PathVariable("id") Long id, MultipartFile file, RedirectAttributes redirectAttributes, Model model) {
+
 
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "File is empty");
             return "redirect:/error-page";
         }
+
 
         User patient = patientRepository.findById(id).orElse(null);
         if (patient == null) {
@@ -170,23 +172,53 @@ public class DoctorController {
             String originalFileName = file.getOriginalFilename();
             String fileExtension = getFileExtension(originalFileName);
 
-            // upload
+
+            if (!isValidFileExtension(fileExtension)) {
+                redirectAttributes.addFlashAttribute("error", "Invalid file type");
+                return "redirect:/error-page";
+            }
+
+
+            String contentType = file.getContentType();
+            if (!isValidMimeType(contentType)) {
+                redirectAttributes.addFlashAttribute("error", "Invalid MIME type");
+                return "redirect:/error-page";
+            }
+
+
             String newFileName = "Patient_" + Instant.now().getEpochSecond() + fileExtension;
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
             amazonS3.putObject(bucketName, newFileName, file.getInputStream(), metadata);
 
+
             patient.setMedicalHistory(newFileName);
             patientRepository.save(patient);
 
-            redirectAttributes.addFlashAttribute("success", "Patient uploaded successfully");
+            redirectAttributes.addFlashAttribute("success", "Patient file uploaded successfully");
         } catch (IOException e) {
-
             redirectAttributes.addFlashAttribute("error", "File upload failed");
         }
 
-        return "redirect:/doctors/uploadFile/{id}";
+        return "redirect:/doctors/uploadFile/" +id;
     }
+
+    // 文件扩展名校验
+    private boolean isValidFileExtension(String fileExtension) {
+        return fileExtension.equalsIgnoreCase(".pdf") ||
+                fileExtension.equalsIgnoreCase(".txt") ||
+                fileExtension.equalsIgnoreCase(".doc") ||
+                fileExtension.equalsIgnoreCase(".docx");
+    }
+
+    // MIME 类型校验
+    private boolean isValidMimeType(String contentType) {
+        return contentType.equals("application/pdf") ||
+                contentType.equals("text/plain") ||
+                contentType.equals("application/msword") ||
+                contentType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    }
+
 
     @GetMapping("/afterappointment")
     public String viewDoctorAfterAppointment(Principal principal, Model model) {

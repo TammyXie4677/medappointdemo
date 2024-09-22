@@ -7,20 +7,22 @@
 
 
 </head>
-<body class="d-flex align-items-center justify-content-center">
+<body>
 <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
 <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-<div class="container-sm">
+<div th:replace="fragments/logged-header :: header"></div>
+<div class="container my5">
   <h1>Upload a file</h1>
 
   <div>
     <h3>Welcome, Dr. <span th:text="${user.lastName}" /></h3>
 
-    <form id="uploadForm" th:action="@{/doctors/uploadFile/{id}(id=${patient.id})}" enctype="multipart/form-data">
-      <label for="fileupload">Photo</label>
+    <form id="uploadForm" th:action="@{/doctors/uploadFile/{id}(id=${patient.id})}" method="post" enctype="multipart/form-data">
+
+    <label for="fileupload">Photo</label>
       <div>
-        <input type="file" id="fileupload" name="fileupload" accept="*" class="form-control" required>
+        <input type="file" id="fileupload" name="fileupload" accept=".pdf,.txt,.docx,.png,.jpg" class="form-control" required>
       </div>
       <div>
       <button type="submit" class="btn btn-primary btn-sm mt-2">Upload file</button>
