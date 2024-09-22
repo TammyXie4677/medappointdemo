@@ -21,19 +21,21 @@
       <th>End Time</th>
       <th>Status</th>
       <th>Actions</th>
+      <th>Files</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="appointment : ${appointments}">
-      <td th:text="${appointment.id}">ID</td>
-      <td th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}">Patients</td>
-      <td th:text="${appointment.appointmentDate}">Date</td>
-      <td th:text="${appointment.startTime}">Start Time</td>
-      <td th:text="${appointment.endTime}">End Time</td>
-      <td th:text="${appointment.status}">Status</td>
+      <td th:text="${appointment.id}"></td>
+      <td th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}"></td>
+      <td th:text="${appointment.appointmentDate}"></td>
+      <td th:text="${appointment.startTime}"></td>
+      <td th:text="${appointment.endTime}"></td>
+      <td th:text="${appointment.status}"></td>
       <td>
         <a th:href="@{/doctors/uploadfile/{id}(id=${appointment.patient.id})}" class="btn btn-success">Upload a File</a>
       </td>
+      <td></td>
     </tr>
     </tbody>
   </table>
