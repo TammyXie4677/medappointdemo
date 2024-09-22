@@ -11,7 +11,7 @@
 <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
 <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-<div th:replace="fragments/logged-header :: header"></div>
+<div th:replace="~{fragments/public-header :: header}"></div>
 <div class="container my5">
   <h1>Upload a file</h1>
 
