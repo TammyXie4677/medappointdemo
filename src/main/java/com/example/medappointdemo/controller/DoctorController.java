@@ -208,6 +208,8 @@ public class DoctorController {
         return fileExtension.equalsIgnoreCase(".pdf") ||
                 fileExtension.equalsIgnoreCase(".txt") ||
                 fileExtension.equalsIgnoreCase(".doc") ||
+                fileExtension.equalsIgnoreCase(".png") ||
+                fileExtension.equalsIgnoreCase(".jpg") ||
                 fileExtension.equalsIgnoreCase(".docx");
     }
 

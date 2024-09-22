@@ -20,9 +20,9 @@
 
     <form id="uploadForm" th:action="@{/doctors/uploadFile/{id}(id=${patient.id})}" method="post" enctype="multipart/form-data">
 
-    <label for="fileupload">Photo</label>
+    <label for="file">Photo</label>
       <div>
-        <input type="file" id="fileupload" name="file" accept=".pdf,.txt,.docx,.png,.jpg" class="form-control" required>
+        <input type="file" id="file" name="file" accept=".pdf,.txt,.docx,.png,.jpg" class="form-control" required>
       </div>
       <div>
       <button type="submit" class="btn btn-primary btn-sm mt-2">Upload file</button>
