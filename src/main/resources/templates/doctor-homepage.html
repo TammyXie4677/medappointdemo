@@ -17,9 +17,9 @@
     </style>
 </head>
 
-<body class="d-flex align-items-center justify-content-center full-height">
+<body>
 <div th:replace="fragments/logged-header :: header"></div>
-<div class="container">
+<div class="d-flex align-items-center justify-content-center full-height">
     <div class="hero-unit text-center">
         <h2>Welcome to MedAppoint, <span th:text="${user.lastName}"></span></h2>
         <h5 class="mt-4 text-muted">"Effortless appointments for your convenience!"</h5>
