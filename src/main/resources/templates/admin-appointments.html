@@ -1,31 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin Appointments Page</title>
+    <title>Appointments list - MedAppoint</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <style>
-        .status-Confirmed {
-            color: green;
-            font-weight: bold;
-        }
-        .status-Cancelled {
-            color: red;
-            font-weight: bold;
-        }
-        .status-Pending {
-            color: orange;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body>
 <div th:replace="fragments/logged-header :: header"></div>
 <div class="container my-5">
-    <h1 class="mb-4">Appointments List</h1>
+    <h2 class="mb-4">Doctors' Appointments</h2>
 
-    <h3>Welcome, Admin user: <span th:text="${user.lastName}"></span></h3>
+    <h6>Welcome to MedAppoint, <span th:text="${user.lastName}"></span></h6>
 
     <div class="card mt-4">
         <div class="card-body">

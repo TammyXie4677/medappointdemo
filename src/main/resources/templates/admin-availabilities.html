@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin Availabilities Page</title>
+    <title>Doctors' Appointments - MedAppoint</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
@@ -12,16 +12,16 @@
     <div th:if="${message}" class="alert alert-success" role="alert">
         <p th:text="${message}"></p>
     </div>
-    <h1 class="mb-4">Doctor's schedule</h1>
+    <h2 class="mb-4">Doctor's schedule</h2>
 
-    <h3>Welcome, Admin user: <span th:text="${user.lastName}"></span></h3>
+    <h6>Welcome to MedAppoint, <span th:text="${user.lastName}"></span></h6>
 
     <div>
-        <p>There are <span th:text="${#lists.size(doctors)}"></span> doctor(s) in the system.</p>
+        <p>* There are <span th:text="${#lists.size(doctors)}"></span> doctor(s) in the system.</p>
 
         <div class="d-flex">
             <div class="me-3 flex-fill">
-                <p>The <span class="text-primary">General</span> Scheduling Rules:</p>
+                <p>1. The <span class="text-primary">General</span> Scheduling Rules:</p>
                 <div th:if="${availabilitiesGroupedByDoctorGeneral != null}">
                     <div th:each="entry : ${availabilitiesGroupedByDoctorGeneral.entrySet()}">
                         <h3 th:text="${entry.key.firstName + ' ' + entry.key.lastName}">Doctor Name</h3>
@@ -72,7 +72,7 @@
             </div>
 
             <div class="flex-fill">
-                <p>The <span class="text-danger">Specific</span> Scheduling Rules:</p>
+                <p>2. The <span class="text-danger">Specific</span> Scheduling Rules:</p>
                 <div th:if="${availabilitiesGroupedByDoctorSpecific != null}">
                     <div th:each="entrys : ${availabilitiesGroupedByDoctorSpecific.entrySet()}">
                         <h3 th:text="${entrys.key.firstName + ' ' + entrys.key.lastName}">Doctor Name</h3>

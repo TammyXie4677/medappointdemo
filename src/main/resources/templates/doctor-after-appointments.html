@@ -1,54 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Doctor After Appointments Page</title>
+  <title>Prescription - Medappoint</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-
 </head>
 <body>
 <div th:replace="fragments/logged-header :: header"></div>
-<div class="container  my-5">
-  <h1>Doctor after appointments List</h1>
-<!--  <div th:if="${#authorization.expression('isAuthenticated() and !hasAuthority(''ROLE_ANONYMOUS'')')}">-->
+<div class="container my-5">
+  <h1>Prescription For Appointments</h1>
+  <h6>Welcome, Dr. <span th:text="${user.lastName}" /></h6>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Patient</th>
+      <th>Date</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Status</th>
+      <th>Actions</th>
+      <th>File</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="appointment : ${appointments}">
+      <td th:text="${appointment.id}">ID</td>
+      <td th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}">Patients</td>
+      <td th:text="${appointment.appointmentDate}">Date</td>
+      <td th:text="${appointment.startTime}">Start Time</td>
+      <td th:text="${appointment.endTime}">End Time</td>
+      <td th:text="${appointment.status}">Status</td>
+      <td>File</td>
+      <td>
+        <a th:href="@{/doctors/uploadfile/{id}(id=${appointment.patient.id})}" class="btn btn-success">Upload a File</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
   <div>
-
-
-<!--    <h3>Welcome, <span th:text="${#authentication.name}"></span></h3>-->
-    <h3>Welcome, Dr. <span th:text="${user.lastName}" /></h3>
-
-
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Patient</th>
-        <th>Date</th>
-        <th>StartTime</th>
-        <th>EndTime</th>
-        <th>Status</th>
-        <th>Actions</th>
-        <th>File</th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <tr th:each="appointment : ${appointments}">
-        <td th:text="${appointment.id}">ID</td>
-        <td th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}">Patients</td>
-        <td th:text="${appointment.appointmentDate}">Date</td>
-        <td th:text="${appointment.startTime}">StartTime</td>
-        <td th:text="${appointment.endTime}">EndTime</td>
-        <td th:text="${appointment.status}">Status</td>
-        <td><a th:href="@{/doctors/uploadfile/{id}(id=${appointment.patient.id})}" class="btn btn-success">Upload a File</a></td>
-        <td>File</td>
-      </tr>
-      </tbody>
-    </table>
+    <a href="javascript:void(0)" th:onclick="|window.history.back()|" class="btn btn-warning">Exit</a>
   </div>
-  <div><a href="javascript:void(0)" th:onclick="|window.history.back()|" class="btn btn-warning">Cancel</a></div>
 </div>
-
 </body>
 </html>
