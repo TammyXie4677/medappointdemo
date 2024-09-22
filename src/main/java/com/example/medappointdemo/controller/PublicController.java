@@ -7,6 +7,7 @@ import com.example.medappointdemo.model.Role;
 import com.example.medappointdemo.model.User;
 import com.example.medappointdemo.service.PatientService;
 import com.example.medappointdemo.service.S3Service;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,12 @@ public class PublicController {
 
     @Autowired
     private PatientService patientService;
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private S3Service s3Service;
-
-    // String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
-
 
     @GetMapping({"/home","/","/index",""})
     public String viewLoginPage(Model model) {
@@ -40,12 +39,46 @@ public class PublicController {
     }
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(HttpSession session, Principal principal, Model model) {
+        if(principal != null){
+            String role = (String) session.getAttribute("role");
+            if(role!=null){
+                switch (role) {
+                    case "ROLE_ADMIN" -> {
+                        return "redirect:/admins/";
+                    }
+                    case "ROLE_DOCTOR" -> {
+                        return "redirect:/doctors/";
+                    }
+                    case "ROLE_PATIENT" -> {
+                        return "redirect:/patients/";
+                    }
+                }
+            }
+        }
+
         return "login-form";
     }
 
     @GetMapping("/register")
-    public String viewRegisterPage(Model model){
+    public String viewRegisterPage(HttpSession session, Principal principal, Model model){
+        if(principal != null){
+            String role = (String) session.getAttribute("role");
+            if(role!=null){
+                switch (role) {
+                    case "ROLE_ADMIN" -> {
+                        return "redirect:/admins/";
+                    }
+                    case "ROLE_DOCTOR" -> {
+                        return "redirect:/doctors/";
+                    }
+                    case "ROLE_PATIENT" -> {
+                        return "redirect:/patients/";
+                    }
+                }
+            }
+        }
+
         model.addAttribute("patient", new User());
         return "register-form";
     }
@@ -56,24 +89,19 @@ public class PublicController {
             log.debug(String.valueOf(result));
             return "register-form";
         }
-
         if (!user.getPassword().equals(user.getPassword2())) {
             result.rejectValue("password2", "passwordsDoNotMatch", "Passwords must match");
             return "register-form";
         }
-
         if (patientService.getPatientByFirstNameAndLastName(user.getFirstName(),user.getLastName()) != null) {
             result.rejectValue("firstName", "usernameExists", "Username already exists");
             return "register-form";
         }
-
         if (patientService.getPatientByEmail(user.getEmail()) != null) {
             result.rejectValue("email", "emailExists", "Email already exists");
             return "register-form";
         }
-
         if(user.getRole() == null){
-//            user.setRole(Role.PATIENT);
             user.setRole(Role.PATIENT);
         }
 
@@ -82,7 +110,6 @@ public class PublicController {
         user.setPassword(encodedPassword);
 
         user.setActive(true);
-
         patientService.savePatient(user);
 
         return "register-success";
@@ -115,7 +142,6 @@ public class PublicController {
         if (result.hasErrors()) {
             return("redirect:/logout");
         }
-        
 
         String email = principal.getName();
         User userInDb = userRepository.findByEmail(email);
@@ -131,7 +157,4 @@ public class PublicController {
         redirectAttributes.addFlashAttribute("message", "Information updated successfully!");
         return "redirect:/patients/";
     }
-
-
-
 }
