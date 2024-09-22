@@ -1,10 +1,12 @@
 package com.example.medappointdemo.controller;
 
 
+import com.amazonaws.HttpMethod;
 import com.example.medappointdemo.repository.UserRepository;
 import com.example.medappointdemo.model.Role;
 import com.example.medappointdemo.model.User;
 import com.example.medappointdemo.service.PatientService;
+import com.example.medappointdemo.service.S3Service;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class PublicController {
     private PatientService patientService;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private S3Service s3Service;
 
     // String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads";
 
@@ -90,10 +95,17 @@ public class PublicController {
             return("redirect:/login");
         }
 
-
         String email = principal.getName();
         User user = userRepository.findByEmail(email);
         model.addAttribute("user", user);
+
+        String photo = user.getPhoto();
+        if (photo == null || photo.isEmpty()) {
+            photo = "Patient_1726973794.png";
+        }
+        String resignedUrl = s3Service.generateUrl(photo, HttpMethod.GET);
+        System.out.println(resignedUrl);
+        model.addAttribute("imgUrl", resignedUrl);
 
         return "edit-form";
     }

@@ -57,13 +57,12 @@ public class PatientController {
         model.addAttribute("user", user);
 
         String photo = user.getPhoto();
-        if(photo != null && !photo.isEmpty() ) {
-            String resignedUrl = s3Service.generateUrl(photo, HttpMethod.GET);
-            System.out.println(resignedUrl);
-            model.addAttribute("imgUrl", resignedUrl);
-        } else {
-            model.addAttribute("imgUrl", "");
+        if (photo == null || photo.isEmpty()) {
+            photo = "Patient_1726973794.png";
         }
+        String resignedUrl = s3Service.generateUrl(photo, HttpMethod.GET);
+        System.out.println(resignedUrl);
+        model.addAttribute("imgUrl", resignedUrl);
 
 
         String viewAppsLink = "/patients/viewappointments";
