@@ -1,39 +1,43 @@
 <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;" th:fragment="header">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/home">Clinic</a>
+        <a class="navbar-brand" href="/home" style="font-size: 1.6rem; font-weight: bold; color: #333;">#MedAppoint</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <!-- 如果 controllerLinks 存在 -->
             <div th:if="${controllerLinks}">
                 <div th:if="${imgUrl != '/pubic/avatar.png'}" class="navbar-nav">
                     <div th:each="link : ${controllerLinks}">
-                        <a class="nav-link" th:href="@{${link.value}}" th:text="${link.key}"></a>
+                        <a class="nav-link" th:href="@{${link.value}}" th:text="${link.key}"
+                           style="font-size: 1.3rem; font-weight: 600; color: #555; padding: 0.75rem 1.5rem;"
+                           onmouseover="this.style.color='#007bff'" onmouseout="this.style.color='#555'"></a>
                     </div>
                 </div>
 
-                <div th:unless="${imgUrl != '/pubic/avatar.png'}"> class="navbar-nav">
-                        <a class="nav-link" th:href="${defaultLinks.get(1)}" th:text="${defaultLinks.get(0)}"></a>
+                <div th:unless="${imgUrl != '/pubic/avatar.png'}" class="navbar-nav">
+                    <a class="nav-link" th:href="${defaultLinks.get(1)}" th:text="${defaultLinks.get(0)}"
+                       style="font-size: 1.3rem; font-weight: 600; color: #555; padding: 0.75rem 1.5rem;"
+                       onmouseover="this.style.color='#007bff'" onmouseout="this.style.color='#555'"></a>
                 </div>
             </div>
 
-            <!-- 如果 controllerLinks 不存在 -->
             <div th:unless="${controllerLinks}" class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="/home">Home</a>
-                <a class="nav-link" href="/features">Features</a>
+                <a class="nav-link active" aria-current="page" href="/home"
+                   style="font-size: 1.3rem; font-weight: 600; color: #555; padding: 0.75rem 1.5rem;"
+                   onmouseover="this.style.color='#007bff'" onmouseout="this.style.color='#555'">Home</a>
+                <a class="nav-link" href="/features"
+                   style="font-size: 1.3rem; font-weight: 600; color: #555; padding: 0.75rem 1.5rem;"
+                   onmouseover="this.style.color='#007bff'" onmouseout="this.style.color='#555'">Features</a>
             </div>
 
-
-            <!-- 右侧的 Logout 和 Avatar -->
             <div th:if="${imgUrl}" class="ms-auto d-flex align-items-center">
                 <a href="/edit">
-                <img th:src="${imgUrl}" alt="Avatar" class="rounded-circle" style="width: 36px; height: 36px;">
+                    <img th:src="${imgUrl}" alt="Avatar" class="rounded-circle" style="width: 36px; height: 36px;">
                 </a>
-                <a href="/logout" class="btn btn-outline-danger ms-3">Logout</a>
+                <a href="/logout" class="btn btn-outline-danger ms-3"
+                   style="font-size: 1.3rem; font-weight: 600; color: #d9534f;">Logout</a>
             </div>
         </div>
     </div>
 </nav>
-
