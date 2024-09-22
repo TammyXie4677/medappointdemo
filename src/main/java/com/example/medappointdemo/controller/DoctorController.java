@@ -185,7 +185,7 @@ public class DoctorController {
             redirectAttributes.addFlashAttribute("error", "File upload failed");
         }
 
-        return "redirect:/uploadFile/{id}";
+        return "redirect:/doctors/uploadFile/{id}";
     }
 
     @GetMapping("/afterappointment")
