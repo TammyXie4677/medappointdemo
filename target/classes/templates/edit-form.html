@@ -6,8 +6,7 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<div th:replace="fragments/public-header :: header"></div>
-
+<div th:replace="fragments/logged-header :: header"></div>
 <div class="container my-5 d-flex align-items-center justify-content-center">
     <!-- Main form for user information -->
     <form th:action="@{/edit}" th:object="${user}" method="post" class="form col-3 mx-auto">
@@ -58,8 +57,8 @@
 
     <!-- Separate form for file upload -->
     <div class="form-group mt-5 mb-3">
-        <div>
-            <img th:src="@{${imgUrl}}" alt="imgurl">
+        <div th:if="${imgUrl}">
+            <img th:src="${imgUrl}" alt="imgurl" style="max-width: 400px; max-height: 300px; width: auto; height: auto;">
         </div>
         <form id="uploadForm" th:action="@{/uploadAvatar}" enctype="multipart/form-data">
             <label for="imgUrl">Photo</label>
