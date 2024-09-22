@@ -41,7 +41,7 @@
         <td th:text="${appointment.startTime}">StartTime</td>
         <td th:text="${appointment.endTime}">EndTime</td>
         <td th:text="${appointment.status}">Status</td>
-        <td><a th:href="@{/doctors/uploadFile/{id}(id=${appointment.patient.id})}" class="btn btn-success">Upload a File</a></td>
+        <td><a th:href="@{/doctors/uploadfile/{id}(id=${appointment.patient.id})}" class="btn btn-success">Upload a File</a></td>
         <td>File</td>
       </tr>
       </tbody>

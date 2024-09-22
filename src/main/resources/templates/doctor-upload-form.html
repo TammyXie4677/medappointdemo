@@ -18,7 +18,7 @@
   <div>
     <h3>Welcome, Dr. <span th:text="${user.lastName}" /></h3>
 
-    <form id="uploadForm" th:action="@{/doctors/uploadFile/{id}(id=${patient.id})}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/doctors/uploadfile/{id}(id=${patient.id})}" method="post" enctype="multipart/form-data">
 
     <label for="file">Photo</label>
       <div>

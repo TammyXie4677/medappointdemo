@@ -131,7 +131,7 @@ public class DoctorController {
         return "redirect:/doctors/appointments";
     }
 
-    @GetMapping("/uploadFile/{id}")
+    @GetMapping("/uploadfile/{id}")
     public String viewUpload(@PathVariable("id") Long id,Principal principal,RedirectAttributes redirectAttributes,Model model) {
 
         Appointment existingAppointment = appointmentRepository.findById(id).orElse(null);
@@ -152,7 +152,7 @@ public class DoctorController {
         return "";
     }
 
-    @PostMapping("/uploadFile/{id}")
+    @PostMapping("/uploadfile/{id}")
     public String uploadPatientFile(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Model model) {
 
 
@@ -179,13 +179,6 @@ public class DoctorController {
             }
 
 
-            String contentType = file.getContentType();
-            if (!isValidMimeType(contentType)) {
-                redirectAttributes.addFlashAttribute("error", "Invalid MIME type");
-                return "redirect:/error-page";
-            }
-
-
             String newFileName = "Patient_" + Instant.now().getEpochSecond() + fileExtension;
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
@@ -200,10 +193,10 @@ public class DoctorController {
             redirectAttributes.addFlashAttribute("error", "File upload failed");
         }
 
-        return "redirect:/doctors/uploadFile/" +id;
+        return "redirect:/doctors/uploadfile/" +id;
     }
 
-    // 文件扩展名校验
+
     private boolean isValidFileExtension(String fileExtension) {
         return fileExtension.equalsIgnoreCase(".pdf") ||
                 fileExtension.equalsIgnoreCase(".txt") ||
@@ -213,13 +206,7 @@ public class DoctorController {
                 fileExtension.equalsIgnoreCase(".docx");
     }
 
-    // MIME 类型校验
-    private boolean isValidMimeType(String contentType) {
-        return contentType.equals("application/pdf") ||
-                contentType.equals("text/plain") ||
-                contentType.equals("application/msword") ||
-                contentType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    }
+
 
 
     @GetMapping("/afterappointment")
