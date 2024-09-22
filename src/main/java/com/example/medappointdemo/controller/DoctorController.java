@@ -153,7 +153,7 @@ public class DoctorController {
     }
 
     @PostMapping("/uploadFile/{id}")
-    public String uploadPatientFile(@PathVariable("id") Long id, MultipartFile file, RedirectAttributes redirectAttributes, Model model) {
+    public String uploadPatientFile(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, Model model) {
 
 
         if (file.isEmpty()) {
