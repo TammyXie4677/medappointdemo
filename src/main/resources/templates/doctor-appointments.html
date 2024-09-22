@@ -7,8 +7,9 @@
 
 
 </head>
-<body class="d-flex align-items-center justify-content-center">
-<div class="container-sm">
+<body>
+<div th:replace="fragments/logged-header :: header"></div>
+<div class="container  my-5">
   <h1>Doctor-appointments List</h1>
 <!--  <div th:if="${#authorization.expression('isAuthenticated() and !hasAuthority(''ROLE_ANONYMOUS'')')}">-->
   <div>
@@ -22,7 +23,7 @@
       <thead>
       <tr>
         <th>ID</th>
-        <th>Doctor</th>
+        <th>Patient</th>
         <th>Date</th>
         <th>StartTime</th>
         <th>EndTime</th>
@@ -34,16 +35,23 @@
       <tbody>
       <tr th:each="appointment : ${appointments}">
         <td th:text="${appointment.id}">ID</td>
-        <td th:text="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}">Doctor</td>
+        <td th:text="${appointment.patient.firstName + ' ' + appointment.patient.lastName}">Patient</td>
         <td th:text="${appointment.appointmentDate}">Date</td>
         <td th:text="${appointment.startTime}">StartTime</td>
         <td th:text="${appointment.endTime}">EndTime</td>
         <td th:text="${appointment.status}">Status</td>
-        <td><a th:href="@{/doctors/editappointment/{id}(id=${appointment.id})}" class="btn btn-success">Handle</a></td>
+        <!--for enum clas -->
+        <td th:if="${appointment.status == T(com.example.medappointdemo.model.Appointment.AppointmentStatus).COMPLETED}"></td>
+
+        <td th:unless="${appointment.status == T(com.example.medappointdemo.model.Appointment.AppointmentStatus).COMPLETED}">
+          <a th:href="@{/doctors/editappointment/{id}(id=${appointment.id})}" class="btn btn-success">Handle</a>
+        </td>
+
       </tr>
       </tbody>
     </table>
   </div>
+  <div><a href="javascript:void(0)" th:onclick="|window.history.back()|" class="btn btn-warning">Cancel</a></div>
 </div>
 
 </body>

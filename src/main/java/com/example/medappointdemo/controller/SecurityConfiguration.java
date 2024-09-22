@@ -1,6 +1,7 @@
 package com.example.medappointdemo.controller;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+@Slf4j
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration {
@@ -46,7 +48,13 @@ public class SecurityConfiguration {
                             .successHandler(authenticationSuccessHandler)
                             .permitAll();
                 })
-                .logout(logout -> logout.logoutSuccessUrl("/home").permitAll())
+                .logout(logout -> {
+                    logout.logoutUrl("/logout");
+                    logout.logoutSuccessUrl("/home").permitAll();
+                    logout.deleteCookies("JSESSIONID");
+                    logout.invalidateHttpSession(true);
+                    logout.clearAuthentication(true);
+                })
                 .build();
     }
 

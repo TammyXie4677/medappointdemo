@@ -8,6 +8,9 @@
 
 </head>
 <body>
+<div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 <div th:replace="fragments/public-header :: header"></div>
 <div class="container my-5 d-flex align-items-center justify-content-center">
 

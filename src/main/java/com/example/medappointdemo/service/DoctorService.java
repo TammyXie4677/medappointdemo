@@ -52,6 +52,10 @@ public class DoctorService {
         return appointmentRepository.findAppointmentById(id);
     }
 
+    public List<Appointment> getCompletedAppointmentsForDoctorByEmail(String email) {
+        return appointmentRepository.findCompletedAppointment_Email(email);
+    }
+
 
 
 
