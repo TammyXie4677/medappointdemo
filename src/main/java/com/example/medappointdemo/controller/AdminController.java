@@ -177,11 +177,6 @@ public class AdminController {
         return "admin-statistics-by-dates";
     }
 
-    @GetMapping("/emails")
-    public String viewEmail(Model model){
-        return null;
-    }
-
     @GetMapping("/emails/template")
     public String viewEmailTemplate(Model model){
         return null;
