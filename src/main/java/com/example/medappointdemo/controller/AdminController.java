@@ -340,9 +340,9 @@ public class AdminController {
 
     }
 
-    @GetMapping("/mails")
+    @GetMapping("/emails")
     public String showMailsSetting(Model model){
-        return "admin-mails";
+        return "admin-emails";
     }
 
 
