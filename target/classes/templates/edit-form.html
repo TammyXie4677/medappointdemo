@@ -141,6 +141,8 @@
                 </div>
             </div>
 
+            <input id="photo" name="photo" type="hidden" th:field="*{photo}">
+
             <div class="d-flex justify-content-center gap-3 mt-3">
                 <button type="submit" class="btn btn-primary">Update</button>
                 <a href="javascript:void(0)" th:onclick="|window.history.back()|" class="btn btn-warning">Exit</a>
