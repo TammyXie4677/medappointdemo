@@ -27,6 +27,7 @@
       <textarea class="form-control" id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Send Email</button>
+    <a href="javascript:void(0)" th:onclick="|window.history.back()|" class="btn btn-warning">Exit</a>
   </form>
 
   <div id="responseMessage" class="alert mt-3" style="display: none;"></div>
