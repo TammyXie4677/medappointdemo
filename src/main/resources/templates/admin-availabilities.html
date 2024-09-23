@@ -65,7 +65,7 @@
                         </table>
                     </div>
                 </div>
-                <div th:if="${availabilitiesGroupedByDoctorGeneral == null}">
+                <div th:unless="${availabilitiesGroupedByDoctorGeneral != null}">
                     <p>Not <span class="text-primary">General</span> schedules yet.</p>
                 </div>
                 <a href="/admins/availabilities/newgeneral" class="btn btn-primary mt-2">Create new general availability</a>
@@ -116,7 +116,7 @@
                         </table>
                     </div>
                 </div>
-                <div th:if="${availabilitiesGroupedByDoctorSpecific == null}">
+                <div th:unless="${availabilitiesGroupedByDoctorSpecific != null}">
                     <p>Not <span class="text-danger">Specific</span> schedules yet.</p>
                 </div>
                 <a href="/admins/availabilities/newspecific" class="btn btn-primary mt-2">Create new specific availability</a>
