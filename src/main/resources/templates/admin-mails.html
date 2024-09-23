@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Send Email</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+  <h1 class="mt-5">Send an Email</h1>
+  <form id="emailForm" class="mt-3">
+    <div class="form-group">
+      <label for="to">Recipient Email (To):</label>
+      <input type="email" class="form-control" id="to" name="to" placeholder="Enter recipient email" required>
+    </div>
+    <div class="form-group">
+      <label for="name">Recipient Name:</label>
+      <input type="text" class="form-control" id="name" name="name" placeholder="Enter recipient name" required>
+    </div>
+    <div class="form-group">
+      <label for="subject">Email Subject:</label>
+      <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter email subject" required>
+    </div>
+    <div class="form-group">
+      <label for="message">Message:</label>
+      <textarea class="form-control" id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Send Email</button>
+  </form>
+
+  <div id="responseMessage" class="alert mt-3" style="display: none;"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  // jQuery to handle the form submission and send data to the API
+  $(document).ready(function() {
+    $('#emailForm').on('submit', function(event) {
+      event.preventDefault();
+
+      var emailData = {
+        to: $('#to').val(),
+        name: $('#name').val(),
+        subject: $('#subject').val(),
+        message: $('#message').val()
+      };
+
+      $.ajax({
+        url: '/sendEmail',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(emailData),
+        success: function(response) {
+          $('#responseMessage').removeClass('alert-danger').addClass('alert-success').text(response).show();
+        },
+        error: function(xhr, status, error) {
+          $('#responseMessage').removeClass('alert-success').addClass('alert-danger').text('Error sending email: ' + error).show();
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
