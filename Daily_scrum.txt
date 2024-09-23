@@ -115,7 +115,41 @@ Example entries for one day, both team members:
 3. Need assistance / figure things out
 - Want to know how to add Calendar
 
-2024/09/18 Fei Yang
+2024/09/19 Fei Yang
+1. Done since last scrum
+- 
+2. Plan until next Scrum
+- 
+3. Need assistance / figure things out
+- 
+2024/09/20 Yunting Xie
+1. Done / not done since last scrum:
+- Config Aws S3 but not upload the file succussfully
+- Try to merge our code but not success
+2. To do until next Scrum:
+- Fix the merge Confilct
+- Deploy and test the code on heroku
+3. Need assistance / figure things out
+- Can not figure out how to merge without conficts
+
+2024/09/20 Fei Yang
+1. Done since last scrum
+- 
+2. Plan until next Scrum
+- 
+3. Need assistance / figure things out
+- 
+
+2024/09/21-2024/09/22 Yunting Xie
+1. Done / not done since last scrum:
+- Swich to connect Fei's github repository to continue our project
+2. To do until next Scrum:
+- Fix the merge Confilct
+- Deploy and test the code on heroku
+3. Need assistance / figure things out
+- Can not figure out how to merge without conficts
+
+2024/09/21-2024/09/22 Fei Yang
 1. Done since last scrum
 - 
 2. Plan until next Scrum
