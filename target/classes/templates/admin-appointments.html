@@ -31,9 +31,9 @@
                 <tr th:each="appointment : ${appointments}">
                     <td th:text="${appointment.id}"></td>
                     <td th:text="${appointment.doctor.firstName + ' ' + appointment.doctor.lastName}">Doctor</td>
-                    <td th:text="${#dates.format(appointment.appointmentDate, 'dd-MM-yyyy')}">Date</td>
-                    <td th:text="${#dates.format(appointment.startTime, 'HH:mm')}">StartTime</td>
-                    <td th:text="${#dates.format(appointment.endTime, 'HH:mm')}">EndTime</td>
+                    <td th:text="${appointment.appointmentDate}">Date</td>
+                    <td th:text="${appointment.startTime}">StartTime</td>
+                    <td th:text="${appointment.endTime}">EndTime</td>
                     <td th:text="${appointment.status}">Status</td>
                 </tr>
                 </tbody>
