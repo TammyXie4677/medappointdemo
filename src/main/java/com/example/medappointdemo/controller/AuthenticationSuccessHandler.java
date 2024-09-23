@@ -66,9 +66,8 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
             setDefaultTargetUrl("/home");
         }
 
-        clearAuthenticationAttributes(request);
-
         super.onAuthenticationSuccess(request, response, authentication);
+        clearAuthenticationAttributes(request);
     }
 }
 
