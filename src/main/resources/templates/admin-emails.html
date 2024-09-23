@@ -9,7 +9,7 @@
 <body>
 <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-<div th:replace="fragments/logged-header :: header"></div>
+<div th:replace="~{fragments/logged-header :: header}"></div>
 
 <div class="container my-5">
   <h3 class="mt-5">Send an Email</h3>
