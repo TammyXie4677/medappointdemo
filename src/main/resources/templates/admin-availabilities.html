@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Doctors' Appointments - MedAppoint</title>
+    <title>Admin Availabilities Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
@@ -65,7 +65,7 @@
                         </table>
                     </div>
                 </div>
-                <div th:if="${availabilitiesGroupedByDoctorGeneral == null}">
+                <div th:unless="${availabilitiesGroupedByDoctorGeneral != null}">
                     <p>Not <span class="text-primary">General</span> schedules yet.</p>
                 </div>
                 <a href="/admins/availabilities/newgeneral" class="btn btn-primary mt-2">Create new general availability</a>
@@ -106,7 +106,7 @@
                                 <td th:text="${availabilitys.endTime}">End Time</td>
                                 <td th:text="${availabilitys.isAvailable}">Available</td>
                                 <td>
-                                    <a th:href="@{/admins/availabilities/deletegeneral/{id}(id=${availability.id})}"
+                                    <a th:href="@{/admins/availabilities/deletegeneral/{id}(id=${availabilitys.id})}"
                                        class="btn btn-danger btn-sm">
                                         Delete
                                     </a>
@@ -116,7 +116,7 @@
                         </table>
                     </div>
                 </div>
-                <div th:if="${availabilitiesGroupedByDoctorSpecific == null}">
+                <div th:unless="${availabilitiesGroupedByDoctorSpecific != null}">
                     <p>Not <span class="text-danger">Specific</span> schedules yet.</p>
                 </div>
                 <a href="/admins/availabilities/newspecific" class="btn btn-primary mt-2">Create new specific availability</a>
@@ -125,6 +125,6 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-FxXk6tQIgHGQ1SREb5V42JpsVQ13syKv0bC+h31c+eM7bd3ED0BMyE/RWeM/VU/W" crossorigin="anonymous"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-FxXk6tQIgHGQ1SREb5V42JpsVQ13syKv0bC+h31c+eM7bd3ED0BMyE/RWeM/VU/W" crossorigin="anonymous"></script>-->
 </body>
 </html>

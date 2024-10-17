@@ -157,4 +157,9 @@ public class PublicController {
         redirectAttributes.addFlashAttribute("message", "Information updated successfully!");
         return "redirect:/patients/";
     }
+
+    @GetMapping("/features")
+    public String viewFeatures(Model model){
+        return "features";
+    }
 }

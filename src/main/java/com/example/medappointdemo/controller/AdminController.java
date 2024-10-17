@@ -177,11 +177,6 @@ public class AdminController {
         return "admin-statistics-by-dates";
     }
 
-    @GetMapping("/emails")
-    public String viewEmail(Model model){
-        return null;
-    }
-
     @GetMapping("/emails/template")
     public String viewEmailTemplate(Model model){
         return null;
@@ -338,6 +333,11 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("message", "Information updated successfully!");
         return "redirect:/admins/doctor-registration";
 
+    }
+
+    @GetMapping("/emails")
+    public String showMailsSetting(Model model){
+        return "admin-emails";
     }
 
 

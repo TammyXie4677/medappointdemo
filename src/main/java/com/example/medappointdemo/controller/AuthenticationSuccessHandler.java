@@ -67,10 +67,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         }
 
         super.onAuthenticationSuccess(request, response, authentication);
+        clearAuthenticationAttributes(request);
     }
-
-
-
-
 }
 
